@@ -1,0 +1,114 @@
+.invoice-wrapper,
+.invoice-wrapper .container {
+    width: 80mm;
+    max-width: 80mm;
+    margin: 0 auto;
+}
+
+
+.invoice-wrapper {
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+@media print {
+    @page {
+        size: auto;
+        margin: 0;
+    }
+
+    html,
+    body {
+        width: 80mm !important;
+        max-width: 80mm !important;
+        margin: 0;
+        padding: 0;
+        height: auto !important;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        font-size: 12px;
+        line-height: 1.2;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .invoice-wrapper,
+    .invoice-wrapper .container {
+        width: 80mm !important;
+        max-width: 80mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .invoice-wrapper,
+    .invoice-wrapper * {
+        break-before: auto !important;
+        break-after: auto !important;
+        break-inside: auto !important;
+        page-break-before: auto !important;
+        page-break-after: auto !important;
+        page-break-inside: auto !important;
+    }
+
+    .invoice-header,
+    .invoice-title,
+    .footer {
+        text-align: center;
+        margin-bottom: 5px;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .table {
+        width: 100%;
+        font-size: 10px;
+        margin-bottom: 4px;
+    }
+
+    .table th,
+    .table td {
+        padding: 2px;
+        vertical-align: top;
+    }
+
+    .table tr {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .row {
+        display: block !important;
+        margin: 0 !important;
+    }
+
+    .col-4,
+    .col-6,
+    .col-8 {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+        text-align: left !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .container,
+    .mt-3,
+    .mb-3 {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .hide-print-btn,
+    .print-btn {
+        display: none !important;
+    }
+
+    .qr-code {
+        text-align: center;
+        margin-top: 10px;
+    }
+}

@@ -1,0 +1,765 @@
+<?php
+
+namespace App\Http\Controllers\Transaction;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
+use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\View;
+use Yajra\DataTables\Facades\DataTables;
+use App\Models\PaymentTransaction;
+use App\Services\PaymentTypeService;
+use App\Models\CashAdjustment;
+use App\Enums\PaymentTypesUniqueCode;
+use App\Models\Expenses\Expense;
+use App\Models\Party\PartyPayment;
+use App\Models\Party\PartyTransaction;
+use App\Services\PartyService;
+use App\Models\Purchase\Purchase;
+use App\Models\Sale\Sale;
+use App\Services\PaymentTransactionService;
+use App\Traits\FormatNumber;
+use App\Traits\FormatsDateInputs;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+
+class CashController extends Controller
+{
+    use FormatNumber;
+    use FormatsDateInputs;
+
+    private $paymentTypeService;
+
+    public $partyService;
+
+
+    private $paymentTransactionService;
+
+    public function __construct(PaymentTypeService $paymentTypeService, PaymentTransactionService $paymentTransactionService, PartyService $partyService)
+    {
+        $this->paymentTypeService = $paymentTypeService;
+        $this->paymentTransactionService = $paymentTransactionService;
+        $this->partyService = $partyService;
+    }
+
+
+    /**
+     * List the cash transactions
+     *
+     * @return \Illuminate\View\View
+     */
+    public function list(): View
+    {
+        $cashInHand = $this->formatWithPrecision($this->returnCashInHandValue());
+        return view('transaction.cash-list', compact('cashInHand'));
+    }
+
+    public function getCashAdjustmentDetails($id): JsonResponse
+    {
+        $model = CashAdjustment::find($id);
+
+        $data = [
+            'adjustment_type'  => $model->adjustment_type,
+            'adjustment_date'  => $this->toUserDateFormat($model->adjustment_date),
+            'amount'  => $this->formatWithPrecision($model->amount, comma: false),
+            'note'  => $model->note,
+            'adjustment_id'  => $model->id,
+            'operation'  => 'update',
+
+        ];
+
+        return response()->json([
+            'status' => true,
+            'message' => '',
+            'data'  => $data,
+        ]);
+    }
+
+    public function storeCashTransaction(Request $request): JsonResponse
+    {
+        try {
+
+            DB::beginTransaction();
+            // Validation rules
+            $rules = [
+                'adjustment_type'  => 'required|string',
+                'adjustment_date'  => ['required', 'date_format:' . implode(',', $this->getDateFormats())],
+                'amount'            => 'required|numeric|gt:0',
+                'note'              => 'nullable|string|max:250',
+            ];
+
+            //validation message
+            $messages = [
+                'transaction_date.required' => 'Adjustment date is required.',
+                'adjustment_type.required'  => 'Adjustment type is required.',
+                'amount.required'          => 'Adjustment amount is required.',
+                'amount.gt'                => 'Adjustment amount must be greater than zero.',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+
+            //Show validation message
+            if ($validator->fails()) {
+                throw new \Exception($validator->errors()->first());
+            }
+
+
+            $validatedData = $validator->validated();
+            /**
+             * Default Payment Type
+             * Cash
+             * */
+            $validatedData['payment_type_id'] = $cashId = $this->paymentTypeService->returnPaymentTypeId(PaymentTypesUniqueCode::CASH->value);
+            $validatedData['adjustment_date'] = $this->toSystemDateFormat($validatedData['adjustment_date']);
+
+            $cashAdjustmentId = request('cash_adjustment_id');
+
+            if (!empty($cashAdjustmentId)) {
+                //update records
+                $adjustmentEntry = CashAdjustment::find($cashAdjustmentId);
+
+                //Delete Payment Transaction
+                $paymentTransactions = $adjustmentEntry->paymentTransaction;
+                if ($paymentTransactions->count() > 0) {
+                    foreach ($paymentTransactions as $paymentTransaction) {
+                        $paymentTransaction->delete();
+                    }
+                }
+
+                $adjustmentEntry->update($validatedData);
+            } else {
+                //Save records
+                $adjustmentEntry = CashAdjustment::create($validatedData);
+            }
+
+
+            /**
+             * Record it in Payment Transactins table
+             * */
+            $paymentsArray = [
+                'transaction_date'          => $validatedData['adjustment_date'],
+                'amount'                    => $validatedData['amount'],
+                'payment_type_id'           => $validatedData['payment_type_id'],
+                'note'                      => $validatedData['note'],
+            ];
+            if (!$transaction = $this->paymentTransactionService->recordPayment($adjustmentEntry, $paymentsArray)) {
+                throw new \Exception(__('payment.failed_to_record_payment_transactions'));
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'status'    => true,
+                'message' => __('app.record_saved_successfully'),
+                'cashInHand'    => $this->returnCashInHandValue(),
+
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 409);
+        }
+    }
+    /**
+     * Cash Transaction list
+     * */
+
+
+
+    public function datatableList(Request $request)
+    {
+
+        // Ensure morph map keys are defined
+        $this->paymentTransactionService->usedTransactionTypeValue();
+
+        $dangerTypes = ['Expense', 'Purchase', 'Sale Return', 'Purchase Order', 'Cash Reduce'];
+
+        $cashAdjustmentKey = 'Cash Adjustment';
+
+        $cashId = $this->paymentTypeService->returnPaymentTypeId(PaymentTypesUniqueCode::CASH->value);
+        $data = PaymentTransaction::with('user', 'paymentType')
+            ->where(function ($query) use ($cashId) {
+                $query->where('payment_type_id', $cashId)
+                    ->orWhere('transfer_to_payment_type_id', $cashId);
+            })
+            ->when($request->from_date, function ($query) use ($request) {
+                return $query->where('transaction_date', '>=', $this->toSystemDateFormat($request->from_date));
+            })
+            ->when($request->to_date, function ($query) use ($request) {
+                return $query->where('transaction_date', '<=', $this->toSystemDateFormat($request->to_date));
+            });
+        $cashInHandTotal = $this->returnCashInHandValue($request->from_date ?? null, $request->to_date ?? null);
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('created_at', function ($row) {
+                return $row->created_at->format(app('company')['date_format']);
+            })
+            ->addColumn('transaction_date', function ($row) {
+                return $row->formatted_transaction_date;
+            })
+            ->addColumn('username', function ($row) {
+                return $row->user->username ?? '';
+            })
+            ->addColumn('amount', function ($row) {
+                return $this->formatWithPrecision($row->amount);
+            })
+            ->addColumn('transaction_type', function ($row) use ($cashAdjustmentKey) {
+                if ($row->transaction_type == $cashAdjustmentKey) {
+                    return $row->transaction->adjustment_type;
+                } else if ($row->transaction->payment_direction) {
+                    //For Party Direct Payments which may have remaining balance after adjustment in PaymentTransaction table
+                    return $row->transaction_type . '(' . (ucfirst($row->transaction->payment_direction)) . ')';
+                } else {
+                    return $row->transaction_type;
+                }
+            })
+            ->addColumn('color_class', function ($row) use ($dangerTypes, $cashAdjustmentKey) {
+                if ($row->transaction_type == $cashAdjustmentKey) {
+                    return in_array($row->transaction->adjustment_type, $dangerTypes) ? "danger" : "success";
+                } else if ($row->transaction->payment_direction) {
+                    //For Party Direct Payments which may have remaining balance after adjustment in PaymentTransaction table
+                    return $row->transaction->payment_direction == "pay" ? "danger" : "success";
+                } else {
+                    return in_array($row->transaction_type, $dangerTypes) ? "danger" : "success";
+                }
+            })
+            ->addColumn('party_name', function ($row) {
+                if ($row->transaction?->party) {
+                    $type = ucfirst($row->transaction->party->party_type); // capitalize first letter
+                    $fullName = $row->transaction->party->getFullName();
+                    return "{$type} : {$fullName}";
+                } else {
+                    return $row->transaction?->category?->name ?? 'Unknown';
+                }
+            })
+            ->addColumn('action', function ($row) use ($cashAdjustmentKey) {
+                $id = $row->id;
+
+                $actionBtn = 'NA';
+
+                if ($row->transaction_type == $cashAdjustmentKey) {
+                    $actionBtn = '<div class="dropdown ms-auto">
+                                            <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded font-22 text-option"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">';
+
+                    $actionBtn .= '<li>
+                                                        <a class="dropdown-item edit-cash-adjustment" data-cash-adjustment-id="' . $row->transaction->id . '" role="button"></i><i class="bx bx-edit"></i> ' . __('app.edit') . '</a>
+                                                    </li>';
+
+                    $actionBtn .= '<li>
+                                                    <button type="button" class="dropdown-item text-danger deleteRequest " data-delete-id=' . $row->transaction->id . '><i class="bx bx-trash"></i> ' . __('app.delete') . '</button>
+                                                </li>';
+
+                    $actionBtn .= '</ul>
+                                        </div>';
+                }
+                return $actionBtn;
+            })
+            ->rawColumns(['action'])
+            ->with(['cash_in_hand_total' => $cashInHandTotal])
+            ->make(true);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function delete(Request $request): JsonResponse
+    {
+
+        $selectedRecordIds = $request->input('record_ids');
+
+        // Perform validation for each selected record ID
+        foreach ($selectedRecordIds as $recordId) {
+            $record = CashAdjustment::find($recordId);
+            if (!$record) {
+                // Invalid record ID, handle the error (e.g., show a message, log, etc.)
+                return response()->json([
+                    'status'    => false,
+                    'message' => __('app.invalid_record_id', ['record_id' => $recordId]),
+                ]);
+            }
+        }
+
+
+        try {
+
+            CashAdjustment::whereIn('id', $selectedRecordIds)->chunk(100, function ($cashAdjustments) {
+                foreach ($cashAdjustments as $adjustment) {
+
+                    $paymentTransactions = $adjustment->paymentTransaction;
+                    if ($paymentTransactions->isNotEmpty()) {
+                        foreach ($paymentTransactions as $paymentTransaction) {
+
+                            $paymentTransaction->delete();
+                        }
+                    }
+                }
+            });
+
+            // Delete Complete Item
+            $itemModel = CashAdjustment::whereIn('id', $selectedRecordIds)->delete();
+
+            return response()->json([
+                'status'    => true,
+                'message' => __('app.record_deleted_successfully'),
+                'cashInHand'    => $this->returnCashInHandValue(),
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return response()->json([
+                    'status'    => false,
+                    'message' => __('app.cannot_delete_records'),
+                ], 409);
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function returnCashInHandValue($from_date = null, $to_date = null)
+    {
+        // Ensure morph map keys are defined
+        $this->paymentTransactionService->usedTransactionTypeValue();
+
+        $cashId = $this->paymentTypeService->returnPaymentTypeId(PaymentTypesUniqueCode::CASH->value);
+
+        // convert incoming dates to system format (or null)
+        $from = $from_date ? $this->toSystemDateFormat($from_date) : null;
+        $to   = $to_date   ? $this->toSystemDateFormat($to_date)   : null;
+
+        // helper closure to apply date filters to a query
+        $applyDate = function ($query) use ($from, $to) {
+            if ($from) $query->where('transaction_date', '>=', $from);
+            if ($to)   $query->where('transaction_date', '<=', $to);
+        };
+
+        // Calculate bank-related transactions (apply date window)
+        $cashTransactionOfSale = PaymentTransaction::where('transaction_type', 'Sale')
+            ->where(function ($q) use ($cashId) {
+                $q->where('payment_type_id', $cashId)
+                    ->orWhere('transfer_to_payment_type_id', $cashId);
+            })
+            ->when($from || $to, $applyDate)
+            ->sum('amount');
+
+        $cashTransactionOfSaleReturn = PaymentTransaction::where('transaction_type', 'Sale Return')
+            ->where(function ($q) use ($cashId) {
+                $q->where('payment_type_id', $cashId)
+                    ->orWhere('transfer_to_payment_type_id', $cashId);
+            })
+            ->when($from || $to, $applyDate)
+            ->sum('amount');
+
+        $cashTransactionOfSaleOrder = PaymentTransaction::where('transaction_type', 'Sale Order')
+            ->where(function ($q) use ($cashId) {
+                $q->where('payment_type_id', $cashId)
+                    ->orWhere('transfer_to_payment_type_id', $cashId);
+            })
+            ->when($from || $to, $applyDate)
+            ->sum('amount');
+
+        $cashTransactionOfPurchase = PaymentTransaction::where('transaction_type', 'Purchase')
+            ->where(function ($q) use ($cashId) {
+                $q->where('payment_type_id', $cashId)
+                    ->orWhere('transfer_to_payment_type_id', $cashId);
+            })
+            ->when($from || $to, $applyDate)
+            ->sum('amount');
+
+        $cashTransactionOfPurchaseReturn = PaymentTransaction::where('transaction_type', 'Purchase Return')
+            ->where(function ($q) use ($cashId) {
+                $q->where('payment_type_id', $cashId)
+                    ->orWhere('transfer_to_payment_type_id', $cashId);
+            })
+            ->when($from || $to, $applyDate)
+            ->sum('amount');
+
+        $cashTransactionOfPurchaseOrder = PaymentTransaction::where('transaction_type', 'Purchase Order')
+            ->where(function ($q) use ($cashId) {
+                $q->where('payment_type_id', $cashId)
+                    ->orWhere('transfer_to_payment_type_id', $cashId);
+            })
+            ->when($from || $to, $applyDate)
+            ->sum('amount');
+
+        $cashTransactionOfExpense = PaymentTransaction::where('transaction_type', 'Expense')
+            ->where(function ($q) use ($cashId) {
+                $q->where('payment_type_id', $cashId)
+                    ->orWhere('transfer_to_payment_type_id', $cashId);
+            })
+            ->when($from || $to, $applyDate)
+            ->sum('amount');
+
+        // Party payments: pay (reduction) & receive (increase)
+        $remainingPayBalance = PaymentTransaction::where('transaction_type', 'Party Payment')
+            ->whereIn('transaction_id', function ($q) {
+                $q->select('id')
+                    ->from(with(new PartyPayment())->getTable())
+                    ->where('payment_direction', 'pay');
+            })
+            ->where('payment_from_unique_code', 'PARTY_BALANCE_AFTER_ADJUSTMENT')
+            ->where(function ($q) use ($cashId) {
+                $q->where('payment_type_id', $cashId)
+                    ->orWhere('transfer_to_payment_type_id', $cashId);
+            })
+            ->when($from || $to, $applyDate)
+            ->sum('amount');
+
+        $remainingReceiveBalance = PaymentTransaction::where('transaction_type', 'Party Payment')
+            ->whereIn('transaction_id', function ($q) {
+                $q->select('id')
+                    ->from(with(new PartyPayment())->getTable())
+                    ->where('payment_direction', 'receive');
+            })
+            ->where('payment_from_unique_code', 'PARTY_BALANCE_AFTER_ADJUSTMENT')
+            ->where(function ($q) use ($cashId) {
+                $q->where('payment_type_id', $cashId)
+                    ->orWhere('transfer_to_payment_type_id', $cashId);
+            })
+            ->when($from || $to, $applyDate)
+            ->sum('amount');
+
+        /**
+         * Only Bank Adjustment Records (apply adjustment_date)
+         */
+        $addCashIds = CashAdjustment::where('adjustment_type', 'Cash Increase')
+            ->when($from, fn($q) => $q->where('adjustment_date', '>=', $from))
+            ->when($to,   fn($q) => $q->where('adjustment_date', '<=', $to))
+            ->pluck('id');
+
+        $reduceCashIds = CashAdjustment::where('adjustment_type', 'Cash Reduce')
+            ->when($from, fn($q) => $q->where('adjustment_date', '>=', $from))
+            ->when($to,   fn($q) => $q->where('adjustment_date', '<=', $to))
+            ->pluck('id');
+
+        $netCashAdjustment = PaymentTransaction::where('transaction_type', 'Cash Adjustment')
+            ->when($from || $to, $applyDate)
+            ->whereIn('transaction_id', $addCashIds)
+            ->sum('amount')
+            - PaymentTransaction::where('transaction_type', 'Cash Adjustment')
+            ->when($from || $to, $applyDate)
+            ->whereIn('transaction_id', $reduceCashIds)
+            ->sum('amount');
+        // End
+
+        $cashInHand = ($cashTransactionOfSale + $cashTransactionOfPurchaseReturn + $cashTransactionOfSaleOrder + $netCashAdjustment + $remainingReceiveBalance)
+            - ($cashTransactionOfSaleReturn + $cashTransactionOfPurchase + $cashTransactionOfPurchaseOrder + $cashTransactionOfExpense + $remainingPayBalance);
+
+        return $this->formatWithPrecision($cashInHand, comma: false);
+    }
+
+
+
+
+
+    /**
+     * Retrieve cash transaction
+     * */
+    function getCashflowRecords(Request $request): JsonResponse
+    {
+        try {
+
+            // Ensure morph map keys are defined
+            $this->paymentTransactionService->usedTransactionTypeValue();
+
+            $dangerTypes = ['Expense', 'Purchase', 'Sale Return', 'Purchase Order'];
+
+            $cashAdjustmentKey = 'Cash Adjustment';
+
+            // Validation rules
+            $rules = [
+                'from_date'         => ['required', 'date_format:' . implode(',', $this->getDateFormats())],
+                'to_date'           => ['required', 'date_format:' . implode(',', $this->getDateFormats())],
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                throw new \Exception($validator->errors()->first());
+            }
+
+            $fromDate           = $request->input('from_date');
+            $fromDate           = $this->toSystemDateFormat($fromDate);
+            $toDate             = $request->input('to_date');
+            $toDate             = $this->toSystemDateFormat($toDate);
+
+            $cashId = $this->paymentTypeService->returnPaymentTypeId(PaymentTypesUniqueCode::CASH->value);
+            $preparedData = PaymentTransaction::with('user', 'paymentType')
+                ->where(function ($query) use ($cashId) {
+                    $query->where('payment_type_id', $cashId)
+                        ->orWhere('transfer_to_payment_type_id', $cashId);
+                })
+                ->when($request->from_date, function ($query) use ($request) {
+                    return $query->where('transaction_date', '>=', $this->toSystemDateFormat($request->from_date));
+                })
+                ->when($request->to_date, function ($query) use ($request) {
+                    return $query->where('transaction_date', '<=', $this->toSystemDateFormat($request->to_date));
+                })->get();
+
+            if ($preparedData->count() == 0) {
+                throw new \Exception('No Records Found!!');
+            }
+            $recordsArray = [];
+
+            foreach ($preparedData as $data) {
+                $transactionDetails = '';
+                $classColor = '';
+                $isCashIn = true;
+
+                //If Party Related Cash transaction
+                $partyName = $data->transaction->party ? $data->transaction->party->getFullName() : '';
+
+                if (!empty($data->transfer_to_payment_type_id)) {
+                    if ($this->paymentTransactionService->getChequeTransactionType($data->transaction_type) == 'Withdraw') {
+                        $transactionDetails = 'Cheque Withdraw';
+                        $classColor = 'danger';
+                        $isCashIn = false;
+                    } else {
+                        $transactionDetails = 'Cheque Deposit';
+                        $classColor = 'success';
+                        $isCashIn = true;
+                    }
+                } else {
+                    if ($data->transaction_type == 'Cash Adjustment') {
+                        $transactionDetails = $data->transaction_type;
+                        $classColor = ($data->transaction->adjustment_type == 'Cash Increase') ? 'success' : 'danger';
+                        $isCashIn = ($data->transaction->adjustment_type == 'Cash Increase');
+                        $partyName = $data->transaction->adjustment_type;
+                    } else {
+                        $transactionDetails = $data->transaction_type;
+
+                        // Determine if transaction is cash in or cash out based on type
+                        if (in_array($data->transaction_type, $dangerTypes)) {
+                            $classColor = 'danger';
+                            $isCashIn = false;
+                        } else {
+                            $classColor = 'success';
+                            $isCashIn = true;
+                        }
+                    }
+                }
+
+                $recordsArray[] = [
+                    'transaction_date'      => $this->toUserDateFormat($data->transaction_date),
+                    'invoice_or_bill_code'  => method_exists($data->transaction, 'getTableCode') ? $data->transaction->getTableCode() : '',
+                    'party_name'            => $partyName,
+                    'category_name'         => $data->transaction->category ? $data->transaction->category->name : '',
+                    'transaction_details'   => $transactionDetails,
+                    'class_color'           => $classColor,
+                    'cash_in'               => ($isCashIn) ? $this->formatWithPrecision($data->amount, comma: false) : 0,
+                    'cash_out'              => (!$isCashIn) ? $this->formatWithPrecision($data->amount, comma: false) : 0,
+                ];
+            }
+
+            return response()->json([
+                'status'    => true,
+                'message' => "Records are retrieved!!",
+                'data' => $recordsArray,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 409);
+        }
+    }
+
+
+
+public function datatableListLedger(Request $request)
+{
+    $cashId      = $this->paymentTypeService->returnPaymentTypeId(PaymentTypesUniqueCode::CASH->value);
+    $chequeId    = $this->paymentTypeService->returnPaymentTypeId(PaymentTypesUniqueCode::CHEQUE->value);
+    $dangerTypes = ['Expense', 'Purchase', 'Sale Return', 'Purchase Order'];
+    
+    $fromDate = $request->from_date ? $this->toSystemDateFormat($request->from_date) : null;
+    $toDate   = $request->to_date ? $this->toSystemDateFormat($request->to_date) : null;
+    $partyId = $request->party_id;
+    $partyType = $request->party_type;
+
+    // --- 1. FETCH REGULAR TRANSACTIONS ---
+    $certainPartyRelatedMorphKeys = ['Party Payment', 'Purchase', 'Sale', 'Sale Return', 'Purchase Return'];
+    $allowedTypes = ['Sale', 'Purchase', 'Party Payment', 'Sale Return', 'Purchase Return'];
+
+    $partyFilter = function ($q) use ($partyId, $partyType, $certainPartyRelatedMorphKeys) {
+        if ($partyId || $partyType) {
+            $q->whereHasMorph('transaction', $certainPartyRelatedMorphKeys, function ($r) use ($partyId, $partyType) {
+                if ($partyId) {
+                    $r->where('party_id', $partyId);
+                } elseif ($partyType) {
+                    $r->whereHas('party', fn($p) => $p->where('party_type', $partyType));
+                }
+            });
+        }
+    };
+
+    $baseQuery = PaymentTransaction::with('transaction.party', 'paymentType')
+        ->whereIn('transaction_type', $allowedTypes)
+        ->when($fromDate, fn($q) => $q->where('transaction_date', '>=', $fromDate))
+        ->when($toDate, fn($q) => $q->where('transaction_date', '<=', $toDate));
+
+    $cashFlow = (clone $baseQuery)->where(fn($q) => $q->where('payment_type_id', $cashId)->orWhere('transfer_to_payment_type_id', $cashId))
+        ->when($partyId || $partyType, $partyFilter)->get()->map(fn($row) => tap($row, fn(&$r) => $r->flow_type = 'cash'));
+
+    $bankFlow = (clone $baseQuery)->where(function($q) use ($cashId) {$q->where('payment_type_id', '!=', $cashId)->orWhere('transfer_to_payment_type_id', '!=', $cashId);})->when($partyId || $partyType, $partyFilter)->get()->map(fn($row) => tap($row, fn(&$r) => $r->flow_type = 'bank'));
+
+    // --- 2. FETCH PARTY OPENING DATAS ---
+    $openingTransactions = PartyTransaction::with('party')
+        ->where('transaction_type', 'Party Opening')
+        ->when($partyId, fn($q) => $q->where('party_id', $partyId))
+        ->when($fromDate, fn($q) => $q->where('transaction_date', '>=', $fromDate))
+        ->when($toDate, fn($q) => $q->where('transaction_date', '<=', $toDate))
+        ->get()
+        ->map(function($row) {
+            $toRec = (float)$row->to_receive;
+            $toPay = (float)$row->to_pay;
+            return (object) [
+                'id'                   => $row->id,
+                'transaction_date'     => $row->transaction_date,
+                'created_at'           => $row->created_at,
+                'transaction_type'     => 'Party Opening',
+                'flow_type'            => 'Opening',
+                'amount'               => $toRec > 0 ? $toRec : $toPay,
+                'type_of_payment'      => $toRec > 0 ? 'receive' : 'pay',
+                'invoice_or_bill_code' => 'Opening Balance',
+                'transaction'          => (object) ['party' => $row->party, 'grand_total' => 0],
+                'is_opening_type'      => true
+            ];
+        });
+
+    // Merge using toBase() to prevent stdClass::getKey() error
+    $transactions = collect([])
+        ->merge($cashFlow->toBase())
+        ->merge($bankFlow->toBase())
+        ->merge($openingTransactions->toBase())
+        ->sortBy(fn($row) => $row->transaction_date . ' ' . $row->created_at)
+        ->values();
+
+    // --- 3. PROCESSING LOOP ---
+    $finalPartyLedgerBalance = null;
+    $finalBalanceStatus = null;
+    $finalBalanceClass = '';
+
+    $transactions = $transactions->map(function ($row) use (&$finalPartyLedgerBalance, &$finalBalanceStatus, &$finalBalanceClass, $dangerTypes, $partyId) {
+        
+        $isOpening = isset($row->is_opening_type);
+
+        // Determine Cash In/Out
+        $isCashIn = true;
+        if ($isOpening) {
+            $isCashIn = ($row->type_of_payment === 'receive');
+        } else {
+            if (!empty($row->type_of_payment)) {
+                $type = strtolower(trim($row->type_of_payment));
+                $isCashIn = ($type === 'receive') ? true : (($type === 'pay') ? false : !in_array($row->transaction_type, $dangerTypes));
+            } else {
+                $isCashIn = !in_array($row->transaction_type, $dangerTypes);
+            }
+        }
+
+        // Move opening amount to name, keep columns 0
+        $row->cash_in  = (!$isOpening && $isCashIn) ? $row->amount : 0;
+        $row->cash_out = (!$isOpening && !$isCashIn) ? $row->amount : 0;
+        $row->grandTotal = $row->transaction->grand_total ?? 0;
+
+        // Row Balance
+        if ($isOpening) {
+            $row->balance = 0; 
+        } elseif ($row->transaction_type === 'Sale' || $row->transaction_type === 'Purchase') {
+            $row->balance = $row->grandTotal - ($isCashIn ? $row->cash_in : $row->cash_out);
+        } else {
+            $row->balance = $row->cash_in - $row->cash_out;
+        }
+
+        // Party Name Formatting
+        $party = $row->transaction->party ?? null;
+        if ($party) {
+            $typeStr = ucfirst($party->party_type);
+            if ($isOpening) {
+                $formattedOpening = $this->formatWithPrecision($row->amount, comma: true);
+                $row->party_name = "{$typeStr} : {$party->getFullName()} (Opening: {$formattedOpening})";
+            } else {
+                $row->party_name = "{$typeStr} : {$party->getFullName()}";
+            }
+            
+            if ($partyId && $party->id == $partyId) {
+                $balanceData = $this->partyService->getPartyBalance([$party->id]);
+                $finalPartyLedgerBalance = $balanceData['balance'] ?? 0;
+                $finalBalanceStatus = ($balanceData['status'] == 'you_collect') ? 'You Collect' : 'You Pay';
+                $finalBalanceClass = ($balanceData['status'] == 'you_collect') ? 'text-success' : 'text-danger';
+            }
+        } else {
+            $row->party_name = $row->transaction?->category?->name ?? 'N/A';
+        }
+
+        // Products and Invoice
+        $row->products = '';
+        if (!$isOpening && $row->transaction && method_exists($row->transaction, 'itemTransaction')) {
+            $row->products = $row->transaction->itemTransaction->map(fn($it) => ($it->item?->name ?? 'Item') . " ($it->quantity)")->implode('<br>');
+        }
+        
+        $invoice = $isOpening ? 'Opening' : (method_exists($row->transaction, 'getTableCode') ? $row->transaction->getTableCode() : '');
+        $row->invoice_or_bill_code = $invoice . ($row->products ? '<br>' . $row->products : '');
+        $row->transaction_details = $row->transaction_type;
+
+        return $row;
+    });
+
+    // Reverse for Datatables (Recent transactions at the top)
+    $transactions = $transactions->reverse()->values();
+
+    // --- 4. RETURN DATATABLES ---
+    return DataTables::of($transactions)
+        ->addIndexColumn()
+        ->addColumn('transaction_date', fn($row) => $row->transaction_date)
+        ->addColumn('flow_type', fn($row) => ucfirst($row->flow_type))
+        ->addColumn('invoice_or_bill_code', fn($row) => $row->invoice_or_bill_code ?: 'Adjustment')
+        ->addColumn('party_name', fn($row) => $row->party_name)
+        ->addColumn('transaction_details', fn($row) => $row->transaction_details)
+        ->addColumn('grand_total', fn($row) => $this->formatWithPrecision($row->grandTotal, comma: false))
+        ->addColumn('cash_in', fn($row) => $this->formatWithPrecision($row->cash_in, comma: false))
+        ->addColumn('cash_out', fn($row) => $this->formatWithPrecision($row->cash_out, comma: false))
+        ->addColumn('balance', fn($row) => '----')
+        ->with([
+            'total_grand_total' => $this->formatWithPrecision($transactions->sum('grandTotal'), comma: false),
+            'total_cash_in'     => $this->formatWithPrecision($transactions->sum('cash_in'), comma: false),
+            'total_cash_out'    => $this->formatWithPrecision($transactions->sum('cash_out'), comma: false),
+            'total_balance'     => $partyId ? '<span class="'.$finalBalanceClass.'">'.$this->formatWithPrecision($finalPartyLedgerBalance, comma: false).' ('.$finalBalanceStatus.')</span>' : '----',
+        ])
+        ->rawColumns(['invoice_or_bill_code', 'total_balance'])
+        ->make(true);
+}
+
+
+}
