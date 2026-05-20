@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Accounts\AccountTransaction;
+use App\Traits\BranchScopeable;
 use App\Traits\FormatsDateInputs;
 
 class PartyTransaction extends Model
 {
     use HasFactory;
+
+    use BranchScopeable;
 
     use FormatsDateInputs;
 

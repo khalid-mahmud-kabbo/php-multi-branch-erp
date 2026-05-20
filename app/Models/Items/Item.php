@@ -12,10 +12,12 @@ use App\Models\User;
 use App\Models\Unit;
 use App\Models\Items\ItemCategory;
 use App\Models\Items\ItemGeneralQuantity;
+use App\Traits\BranchScopeable;
 
 class Item extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

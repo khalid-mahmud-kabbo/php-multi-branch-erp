@@ -16,10 +16,13 @@ use App\Models\Sale\Sale;
 use App\Models\State;
 use App\Models\Accounts\AccountTransaction;
 use App\Models\Currency;
+use App\Traits\BranchScopeable;
 
 class SaleReturn extends Model
 {
     use HasFactory;
+
+    use BranchScopeable;
 
     use FormatsDateInputs;
 

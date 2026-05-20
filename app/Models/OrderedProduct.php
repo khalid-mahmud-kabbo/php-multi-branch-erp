@@ -11,12 +11,14 @@ use App\Models\Service;
 use App\Models\Order;
 use App\Models\JobOrder;
 use App\Models\User;
+use App\Traits\BranchScopeable;
 use App\Traits\FormatsDateInputs; // Import your Traits 
 
 class OrderedProduct extends Model
 {
     use HasFactory;
     use FormatsDateInputs;
+    use BranchScopeable;
 
     /**
      * This method calling the Trait FormatsDateInputs

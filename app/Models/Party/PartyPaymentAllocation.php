@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\PaymentTransaction;
+use App\Traits\BranchScopeable;
 
 class PartyPaymentAllocation extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     public $timestamps = false; // Disable automatic timestamps
 

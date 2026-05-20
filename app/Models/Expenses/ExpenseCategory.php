@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Accounts\AccountGroup;
 use App\Models\Accounts\AccountTransaction;
 use App\Models\User;
+use App\Traits\BranchScopeable;
 
 class ExpenseCategory extends Model
 {
     use HasFactory;
+
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

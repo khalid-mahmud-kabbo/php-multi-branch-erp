@@ -16,12 +16,15 @@ use App\Models\PaymentTransaction;
 use App\Models\Purchase\PurchaseOrder;
 use App\Models\Accounts\AccountTransaction;
 use App\Models\Currency;
+use App\Traits\BranchScopeable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Purchase extends Model
 {
     use HasFactory;
 
+    use BranchScopeable;
+    
     use FormatsDateInputs;
 
     use FormatTime;

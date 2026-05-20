@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\BranchScopeable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class UserWarehouse extends Model
 {
     use HasFactory;
+
+    use BranchScopeable;
 
     // Disable timestamps
     public $timestamps = false;

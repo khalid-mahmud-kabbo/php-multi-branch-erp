@@ -19,12 +19,14 @@ use App\Models\Tax;
 use App\Models\Unit;
 use App\Models\Warehouse;
 use App\Models\Purchase\Purchase;
+use App\Traits\BranchScopeable;
 
 class ItemTransaction extends Model
 {
     use HasFactory;
 
     use FormatsDateInputs;
+    use BranchScopeable;
 
 
     /**

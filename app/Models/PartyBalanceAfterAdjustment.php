@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\PaymentTransaction;
+use App\Traits\BranchScopeable;
 
 class PartyBalanceAfterAdjustment extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     public $timestamps = false; // Disable automatic timestamps
 

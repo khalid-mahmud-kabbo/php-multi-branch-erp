@@ -1,19 +1,14 @@
 <?php
 
-namespace App\Models\Items;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-use App\Models\User;
-use App\Traits\BranchScopeable;
-
-class Brand extends Model
+class Branch extends Model
 {
     use HasFactory;
-
-    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,9 +16,11 @@ class Brand extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'description',
-        'status',
+        'adjustment_type',
+        'adjustment_date',
+        'payment_type_id',
+        'amount',
+        'note',
     ];
 
     /**
@@ -44,13 +41,18 @@ class Brand extends Model
     }
 
     /**
-     * Define the relationship between Order and User.
+     * Define the relationship between Expense Payment Transaction & Expense table.
      *
-     * @return BelongsTo
+     * @return MorphMany
      */
-    public function user(): BelongsTo
+
+    public function getTableCode()
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return null;
     }
+
+
+
+
 
 }

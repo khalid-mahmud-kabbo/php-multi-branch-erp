@@ -10,10 +10,13 @@ use App\Models\Items\ItemTransaction;
 use App\Traits\FormatsDateInputs;
 use App\Traits\FormatTime;
 use App\Models\User;
+use App\Traits\BranchScopeable;
 
 class StockAdjustment extends Model
 {
     use HasFactory;
+
+    use BranchScopeable;
 
     use FormatsDateInputs;
 

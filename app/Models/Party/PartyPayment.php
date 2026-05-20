@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Party\Party;
 use App\Models\Party\PartyPaymentAllocation;
 use App\Models\PaymentTransaction;
+use App\Traits\BranchScopeable;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class PartyPayment extends Model
@@ -20,6 +21,8 @@ class PartyPayment extends Model
     use HasFactory;
 
     use FormatsDateInputs;
+
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

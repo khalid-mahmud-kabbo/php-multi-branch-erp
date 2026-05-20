@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Items\ItemTransaction;
 use App\Models\Warehouse;
+use App\Traits\BranchScopeable;
 
 class ItemStockTransfer extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

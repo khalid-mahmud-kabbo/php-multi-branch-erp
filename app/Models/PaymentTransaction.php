@@ -18,12 +18,15 @@ use App\Models\Purchase\Purchase;
 use App\Models\Sale\Sale;
 use App\Models\ChequeTransaction;
 use App\Models\Items\ItemTransaction;
+use App\Traits\BranchScopeable;
 
 class PaymentTransaction extends Model
 {
     use HasFactory;
 
     use FormatsDateInputs;
+
+    use BranchScopeable;
 
     use FormatTime;
 

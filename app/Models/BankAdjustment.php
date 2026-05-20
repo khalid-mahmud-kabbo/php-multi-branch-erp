@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\PaymentTransaction;
+use App\Traits\BranchScopeable;
 
 class BankAdjustment extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

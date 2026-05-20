@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Items\Item;
+use App\Traits\BranchScopeable;
 
 class ItemSerialMaster extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

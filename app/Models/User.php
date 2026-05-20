@@ -13,11 +13,12 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Role;
 use App\Models\UserWarehouse;
 use App\Models\OrderedProduct;
-
+use App\Traits\BranchScopeable;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

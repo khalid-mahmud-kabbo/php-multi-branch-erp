@@ -11,10 +11,12 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use App\Models\User;
 use App\Models\Party\PartyTransaction;
 use App\Services\PartyService;
+use App\Traits\BranchScopeable;
 
 class Party extends Model
 {
     use HasFactory;
+    use BranchScopeable;
     /**
      * The attributes that are mass assignable.
      *

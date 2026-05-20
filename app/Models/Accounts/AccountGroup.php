@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Accounts\Account;
+use App\Traits\BranchScopeable;
 
 class AccountGroup extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

@@ -9,10 +9,12 @@ use App\Models\Items\ItemSerialMaster;
 use App\Models\Items\ItemTransaction;
 use App\Models\Items\Item;
 use App\Models\Warehouse;
+use App\Traits\BranchScopeable;
 
 class ItemSerialTransaction extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

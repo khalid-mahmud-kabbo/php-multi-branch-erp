@@ -18,10 +18,12 @@ use App\Models\Sale\Sale;
 use App\Models\Accounts\AccountTransaction;
 use App\Models\Currency;
 use App\Models\StatusHistory;
+use App\Traits\BranchScopeable;
 
 class SaleOrder extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     use FormatsDateInputs;
 

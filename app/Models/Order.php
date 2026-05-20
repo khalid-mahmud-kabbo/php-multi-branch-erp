@@ -12,12 +12,15 @@ use App\Models\OrderPayment;
 use App\Models\Customer;
 use App\Models\Party\Party;
 use App\Models\User;
+use App\Traits\BranchScopeable;
 use App\Traits\FormatsDateInputs; // Import your trait
 
 class Order extends Model
 {
     use HasFactory;
     use FormatsDateInputs;
+    use BranchScopeable;
+    
 
     /**
      * The attributes that are mass assignable.

@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\OrderedProducts;
 use App\Models\Tax;
 use App\Models\User;
+use App\Traits\BranchScopeable;
 
 class Service extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

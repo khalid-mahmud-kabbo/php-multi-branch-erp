@@ -8,11 +8,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Order;
 use App\Models\User;
+use App\Traits\BranchScopeable;
+
 //use App\Models\Customer;
 
 class Customer extends Model
 {
     use HasFactory;
+    use BranchScopeable;
     /**
      * The attributes that are mass assignable.
      *

@@ -9,10 +9,12 @@ use App\Models\Items\ItemBatchMaster;
 use App\Models\Items\ItemTransaction;
 use App\Models\Items\Item;
 use App\Models\Warehouse;
+use App\Traits\BranchScopeable;
 
 class ItemBatchTransaction extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

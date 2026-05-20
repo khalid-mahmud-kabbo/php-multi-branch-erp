@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Items\ItemBatchTransaction;
 use App\Models\Items\Item;
+use App\Traits\BranchScopeable;
 use App\Traits\FormatsDateInputs;
 
 class ItemBatchMaster extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     use FormatsDateInputs;
 

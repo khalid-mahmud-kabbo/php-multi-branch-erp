@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\PaymentTypes;
+use App\Traits\BranchScopeable;
 
 class ChequeTransaction extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

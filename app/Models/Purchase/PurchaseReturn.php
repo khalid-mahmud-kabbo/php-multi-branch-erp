@@ -15,10 +15,13 @@ use App\Models\PaymentTransaction;
 use App\Models\Purchase\Purchase;
 use App\Models\Accounts\AccountTransaction;
 use App\Models\Currency;
+use App\Traits\BranchScopeable;
 
 class PurchaseReturn extends Model
 {
     use HasFactory;
+
+    use BranchScopeable;
 
     use FormatsDateInputs;
 

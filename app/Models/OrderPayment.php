@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\PaymentTypes;
 use App\Models\Order;
+use App\Traits\BranchScopeable;
 
 class OrderPayment extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

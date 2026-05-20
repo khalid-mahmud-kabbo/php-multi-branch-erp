@@ -15,7 +15,7 @@ use App\Models\PaymentTransaction;
 use App\Models\Expenses\ExpenseCategory;
 use App\Models\Expenses\ExpenseSubcategory;
 use App\Models\Accounts\AccountTransaction;
-
+use App\Traits\BranchScopeable;
 use App\Traits\FormatsDateInputs;
 use App\Traits\FormatTime;
 
@@ -26,6 +26,8 @@ class Expense extends Model
     use FormatTime;
 
     use HasFactory;
+
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

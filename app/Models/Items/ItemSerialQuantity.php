@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Items\ItemSerialMaster;
 use App\Models\Warehouse;
+use App\Traits\BranchScopeable;
 
 class ItemSerialQuantity extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

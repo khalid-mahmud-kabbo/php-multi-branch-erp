@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\User;
+use App\Traits\BranchScopeable;
 
 class ExpenseSubcategory extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

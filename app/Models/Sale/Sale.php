@@ -17,11 +17,13 @@ use App\Models\Sale\SaleOrder;
 use App\Models\State;
 use App\Models\Accounts\AccountTransaction;
 use App\Models\Currency;
+use App\Traits\BranchScopeable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Sale extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     use FormatsDateInputs;
 

@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
+use App\Traits\BranchScopeable;
 
 class ExpenseItemMaster extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     protected $table = 'expense_item_master';
 

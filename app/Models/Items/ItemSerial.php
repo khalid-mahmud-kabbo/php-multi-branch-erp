@@ -2,12 +2,14 @@
 
 namespace App\Models\Items;
 
+use App\Traits\BranchScopeable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ItemSerial extends Model
 {
     use HasFactory;
+    use BranchScopeable;
 
     /**
      * The attributes that are mass assignable.

@@ -12,10 +12,13 @@ use App\Models\Items\ItemStockTransfer;
 use App\Traits\FormatsDateInputs;
 use App\Traits\FormatTime;
 use App\Models\User;
+use App\Traits\BranchScopeable;
 
 class StockTransfer extends Model
 {
     use HasFactory;
+
+    use BranchScopeable;
 
     use FormatsDateInputs;
 
