@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2026 at 04:35 PM
+-- Generation Time: May 20, 2026 at 07:26 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `accounts` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `group_id` bigint(20) UNSIGNED NOT NULL,
   `number` varchar(255) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
@@ -50,37 +51,37 @@ CREATE TABLE `accounts` (
 -- Dumping data for table `accounts`
 --
 
-INSERT INTO `accounts` (`id`, `group_id`, `number`, `name`, `description`, `debit_amt`, `credit_amt`, `unique_code`, `created_by`, `updated_by`, `created_at`, `updated_at`, `is_deletable`, `payment_type_bank_id`, `expense_category_id`, `party_id`) VALUES
-(1, 3, NULL, 'Stock-in-Hand', 'Total Current Stock Value', 0.0000, 0.0000, 'STOCK_IN_HAND', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(2, 8, NULL, 'Input CCGT', 'Records Input Tax/GST', 0.0000, 0.0000, 'INPUT_CGST', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(3, 8, NULL, 'Input CCGT', 'Records Input Tax/GST', 0.0000, 0.0000, 'INPUT_SGST', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(4, 8, NULL, 'Input Tax All', 'Records Input Taxes', 0.0000, 0.0000, 'INPUT_TAX_ALL', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(5, 20, NULL, 'Output CCGT', 'Records Output Tax/GST', 0.0000, 0.0000, 'OUTPUT_CGST', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(6, 20, NULL, 'Output CCGT', 'Records Output Tax/GST', 0.0000, 0.0000, 'OUTPUT_SGST', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(7, 20, NULL, 'Output Tax All', 'Records Output Tax All', 0.0000, 0.0000, 'OUTPUT_TAX_ALL', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(8, 5, NULL, 'Cash In Hand', 'Children of Cash Account', 0.0000, 0.0000, 'CASH_IN_HAND', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(9, 17, NULL, 'Unwithdrawn Cheques', 'Children of Other Current Liabilities', 0.0000, 0.0000, 'UNWITHDRAWN_CHEQUES', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(10, 14, NULL, 'Net Income(Profit)', 'Children of Reserves & Surplus', 0.0000, 0.0000, 'NET_INCOME_OR_PROFIT', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(11, 13, NULL, 'Opening Stock Balance', 'Children of Opening Balance Equity', 0.0000, 0.0000, 'OPENING_STOCK_BALANCE', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(12, 4, NULL, 'Sundry Debtors List', 'Children of Sundry Debtors', 0.0000, 0.0000, 'SUNDRY_DEBTORS_LIST', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(13, 18, NULL, 'Sundry Creditors List', 'Children of Sundry Creditors', 0.0000, 0.0000, 'SUNDRY_CREDITORS_LIST', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(14, 18, NULL, 'Party Opening Balance', 'Children of Opening Balance Equity', 0.0000, 0.0000, 'PARTY_OPENING_BALANCE', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(15, 9, NULL, 'Advance Paid for Purchase Order', 'Children of Other Current Assets', 0.0000, 0.0000, 'ADVANCE_PAID_FOR_PURCHASE_ORDER', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(16, 22, NULL, 'Purchases', 'Children of Purchase Accounts', 0.0000, 0.0000, 'PURCHASES', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
-(19, 23, NULL, 'দোকান ভাড়া', NULL, 0.0000, 0.0000, NULL, 1, 1, '2025-11-10 20:21:09', '2025-11-10 20:21:09', 0, NULL, 2, NULL),
-(20, 6, NULL, 'Bank', NULL, 0.0000, 0.0000, NULL, 2, 2, '2025-11-13 14:19:39', '2026-02-10 14:02:05', 0, 4, NULL, NULL),
-(26, 23, NULL, 'আপ্যায়ন খরচ', NULL, 0.0000, 0.0000, NULL, 2, 2, '2025-11-24 21:12:09', '2025-11-24 21:12:09', 0, NULL, 6, NULL),
-(29, 6, NULL, 'DUE', NULL, 0.0000, 0.0000, NULL, 6, 6, '2025-12-03 02:27:29', '2025-12-03 02:27:29', 0, 7, NULL, NULL),
-(30, 23, NULL, 'নাইট গার্ড', NULL, 0.0000, 0.0000, NULL, 6, 6, '2025-12-08 00:56:20', '2025-12-08 00:56:20', 0, NULL, 9, NULL),
-(32, 23, NULL, 'বিল', NULL, 0.0000, 0.0000, NULL, 5, 5, '2025-12-12 22:19:46', '2025-12-12 22:19:46', 0, NULL, 11, NULL),
-(33, 23, NULL, 'বিভিন্ন খরচ', NULL, 0.0000, 0.0000, NULL, 5, 5, '2025-12-14 02:55:56', '2025-12-15 21:02:42', 0, NULL, 12, NULL),
-(34, 23, NULL, 'বিভিন্ন খরচ', NULL, 0.0000, 0.0000, NULL, 4, 4, '2025-12-30 23:51:32', '2025-12-30 23:51:32', 0, NULL, 1, NULL),
-(35, 23, NULL, 'বিল', NULL, 0.0000, 0.0000, NULL, 4, 4, '2025-12-30 23:52:00', '2025-12-30 23:52:00', 0, NULL, 2, NULL),
-(39, 23, NULL, 'ব্যাংক কিস্তি', NULL, 0.0000, 0.0000, NULL, 4, 4, '2025-12-30 23:54:03', '2025-12-30 23:54:03', 0, NULL, 6, NULL),
-(40, 23, NULL, 'আপ্যায়ন খরচ', NULL, 0.0000, 0.0000, NULL, 4, 4, '2025-12-30 23:54:18', '2025-12-30 23:54:18', 0, NULL, 7, NULL),
-(42, 23, NULL, 'কমিশন', NULL, 0.0000, 0.0000, NULL, 4, 4, '2025-12-30 23:55:00', '2025-12-30 23:55:00', 0, NULL, 9, NULL),
-(43, 23, NULL, 'বেতন', NULL, 0.0000, 0.0000, NULL, 4, 4, '2025-12-30 23:55:16', '2025-12-30 23:55:16', 0, NULL, 10, NULL),
-(44, 23, NULL, 'ট্রান্সপোর্ট খরচ', NULL, 0.0000, 0.0000, NULL, 5, 5, '2026-01-05 22:54:05', '2026-01-05 22:54:05', 0, NULL, 11, NULL);
+INSERT INTO `accounts` (`id`, `branch_id`, `group_id`, `number`, `name`, `description`, `debit_amt`, `credit_amt`, `unique_code`, `created_by`, `updated_by`, `created_at`, `updated_at`, `is_deletable`, `payment_type_bank_id`, `expense_category_id`, `party_id`) VALUES
+(1, 1, 3, NULL, 'Stock-in-Hand', 'Total Current Stock Value', 0.0000, 0.0000, 'STOCK_IN_HAND', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(2, 1, 8, NULL, 'Input CCGT', 'Records Input Tax/GST', 0.0000, 0.0000, 'INPUT_CGST', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(3, 1, 8, NULL, 'Input CCGT', 'Records Input Tax/GST', 0.0000, 0.0000, 'INPUT_SGST', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(4, 1, 8, NULL, 'Input Tax All', 'Records Input Taxes', 0.0000, 0.0000, 'INPUT_TAX_ALL', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(5, 1, 20, NULL, 'Output CCGT', 'Records Output Tax/GST', 0.0000, 0.0000, 'OUTPUT_CGST', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(6, 1, 20, NULL, 'Output CCGT', 'Records Output Tax/GST', 0.0000, 0.0000, 'OUTPUT_SGST', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(7, 1, 20, NULL, 'Output Tax All', 'Records Output Tax All', 0.0000, 0.0000, 'OUTPUT_TAX_ALL', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(8, 1, 5, NULL, 'Cash In Hand', 'Children of Cash Account', 0.0000, 0.0000, 'CASH_IN_HAND', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(9, 1, 17, NULL, 'Unwithdrawn Cheques', 'Children of Other Current Liabilities', 0.0000, 0.0000, 'UNWITHDRAWN_CHEQUES', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(10, 1, 14, NULL, 'Net Income(Profit)', 'Children of Reserves & Surplus', 0.0000, 0.0000, 'NET_INCOME_OR_PROFIT', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(11, 1, 13, NULL, 'Opening Stock Balance', 'Children of Opening Balance Equity', 0.0000, 0.0000, 'OPENING_STOCK_BALANCE', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(12, 1, 4, NULL, 'Sundry Debtors List', 'Children of Sundry Debtors', 0.0000, 0.0000, 'SUNDRY_DEBTORS_LIST', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(13, 1, 18, NULL, 'Sundry Creditors List', 'Children of Sundry Creditors', 0.0000, 0.0000, 'SUNDRY_CREDITORS_LIST', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(14, 1, 18, NULL, 'Party Opening Balance', 'Children of Opening Balance Equity', 0.0000, 0.0000, 'PARTY_OPENING_BALANCE', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(15, 1, 9, NULL, 'Advance Paid for Purchase Order', 'Children of Other Current Assets', 0.0000, 0.0000, 'ADVANCE_PAID_FOR_PURCHASE_ORDER', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(16, 1, 22, NULL, 'Purchases', 'Children of Purchase Accounts', 0.0000, 0.0000, 'PURCHASES', NULL, NULL, '2025-11-02 10:02:31', '2025-11-02 10:02:31', 0, NULL, NULL, NULL),
+(19, 1, 23, NULL, 'দোকান ভাড়া', NULL, 0.0000, 0.0000, NULL, 1, 1, '2025-11-10 20:21:09', '2025-11-10 20:21:09', 0, NULL, 2, NULL),
+(20, 1, 6, NULL, 'Bank', NULL, 0.0000, 0.0000, NULL, 2, 2, '2025-11-13 14:19:39', '2026-02-10 14:02:05', 0, 4, NULL, NULL),
+(26, 1, 23, NULL, 'আপ্যায়ন খরচ', NULL, 0.0000, 0.0000, NULL, 2, 2, '2025-11-24 21:12:09', '2025-11-24 21:12:09', 0, NULL, 6, NULL),
+(29, 1, 6, NULL, 'DUE', NULL, 0.0000, 0.0000, NULL, 6, 6, '2025-12-03 02:27:29', '2025-12-03 02:27:29', 0, 7, NULL, NULL),
+(30, 1, 23, NULL, 'নাইট গার্ড', NULL, 0.0000, 0.0000, NULL, 6, 6, '2025-12-08 00:56:20', '2025-12-08 00:56:20', 0, NULL, 9, NULL),
+(32, 1, 23, NULL, 'বিল', NULL, 0.0000, 0.0000, NULL, 5, 5, '2025-12-12 22:19:46', '2025-12-12 22:19:46', 0, NULL, 11, NULL),
+(33, 1, 23, NULL, 'বিভিন্ন খরচ', NULL, 0.0000, 0.0000, NULL, 5, 5, '2025-12-14 02:55:56', '2025-12-15 21:02:42', 0, NULL, 12, NULL),
+(34, 1, 23, NULL, 'বিভিন্ন খরচ', NULL, 0.0000, 0.0000, NULL, 4, 4, '2025-12-30 23:51:32', '2025-12-30 23:51:32', 0, NULL, 1, NULL),
+(35, 1, 23, NULL, 'বিল', NULL, 0.0000, 0.0000, NULL, 4, 4, '2025-12-30 23:52:00', '2025-12-30 23:52:00', 0, NULL, 2, NULL),
+(39, 1, 23, NULL, 'ব্যাংক কিস্তি', NULL, 0.0000, 0.0000, NULL, 4, 4, '2025-12-30 23:54:03', '2025-12-30 23:54:03', 0, NULL, 6, NULL),
+(40, 1, 23, NULL, 'আপ্যায়ন খরচ', NULL, 0.0000, 0.0000, NULL, 4, 4, '2025-12-30 23:54:18', '2025-12-30 23:54:18', 0, NULL, 7, NULL),
+(42, 1, 23, NULL, 'কমিশন', NULL, 0.0000, 0.0000, NULL, 4, 4, '2025-12-30 23:55:00', '2025-12-30 23:55:00', 0, NULL, 9, NULL),
+(43, 1, 23, NULL, 'বেতন', NULL, 0.0000, 0.0000, NULL, 4, 4, '2025-12-30 23:55:16', '2025-12-30 23:55:16', 0, NULL, 10, NULL),
+(44, 1, 23, NULL, 'ট্রান্সপোর্ট খরচ', NULL, 0.0000, 0.0000, NULL, 5, 5, '2026-01-05 22:54:05', '2026-01-05 22:54:05', 0, NULL, 11, NULL);
 
 -- --------------------------------------------------------
 
@@ -141,6 +142,7 @@ INSERT INTO `account_groups` (`id`, `parent_id`, `number`, `name`, `description`
 
 CREATE TABLE `account_transactions` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `transaction_date` date NOT NULL,
   `transaction_type` varchar(255) NOT NULL,
   `transaction_id` bigint(20) UNSIGNED NOT NULL,
@@ -195,6 +197,31 @@ CREATE TABLE `bank_adjustments` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branches`
+--
+
+CREATE TABLE `branches` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `code` varchar(100) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `branches`
+--
+
+INSERT INTO `branches` (`id`, `name`, `code`, `phone`, `email`, `address`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Main Branch', 'MAIN', NULL, NULL, NULL, 1, '2026-05-20 17:26:37', '2026-05-20 17:26:37');
 
 -- --------------------------------------------------------
 
@@ -343,7 +370,7 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`id`, `name`, `mobile`, `email`, `address`, `state_id`, `bank_details`, `tax_number`, `colored_logo`, `light_logo`, `signature`, `language_code`, `language_name`, `active_sms_api`, `number_precision`, `quantity_precision`, `show_hsn`, `show_sku`, `show_mrp`, `restrict_to_sell_above_mrp`, `restrict_to_sell_below_msp`, `auto_update_sale_price`, `auto_update_purchase_price`, `auto_update_average_purchase_price`, `enable_serial_tracking`, `enable_batch_tracking`, `is_batch_compulsory`, `enable_mfg_date`, `enable_exp_date`, `enable_model`, `enable_color`, `enable_size`, `show_tax_summary`, `tax_type`, `show_signature_on_invoice`, `show_brand_on_invoice`, `show_tax_number_on_invoice`, `show_terms_and_conditions_on_invoice`, `terms_and_conditions`, `created_at`, `updated_at`, `timezone`, `date_format`, `time_format`, `is_enable_crm`, `is_saudi`, `is_enable_carrier`, `is_enable_carrier_charge`, `show_party_due_payment`, `show_discount`, `allow_negative_stock_billing`, `is_enable_secondary_currency`, `is_item_name_unique`) VALUES
-(1, 'Byte Inv.', '+880 1617-033692', 'support@bytesoft.shop', 'Nawdapara, Airport Road, Rajshahi', NULL, NULL, '1452551815151', NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 'tax', 0, 1, 1, 1, 'বিক্রিত মাল ফেরত নেওয়া হয় না।', '2025-11-02 10:02:31', '2026-05-15 11:18:11', 'Asia/Riyadh', 'd-m-Y', '12', 0, 0, 1, 0, 1, 0, 0, 0, 1);
+(1, 'Byte Inv.', '+880 1617-033692', 'support@bytesoft.shop', 'Nawdapara, Airport Road, Rajshahi', NULL, NULL, '1452551815151', NULL, NULL, NULL, NULL, NULL, NULL, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 'tax', 0, 1, 1, 1, 'বিক্রিত মাল ফেরত নেওয়া হয় না।', '2025-11-02 10:02:31', '2026-05-15 11:39:56', 'Asia/Riyadh', 'd-m-Y', '12', 0, 1, 1, 0, 1, 0, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -377,6 +404,7 @@ INSERT INTO `currencies` (`id`, `name`, `symbol`, `code`, `exchange_rate`, `is_c
 
 CREATE TABLE `customers` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `prefix_code` varchar(255) DEFAULT NULL,
   `count_id` varchar(255) DEFAULT NULL,
   `customer_id` varchar(255) DEFAULT NULL,
@@ -445,6 +473,7 @@ INSERT INTO `email_templates` (`id`, `name`, `subject`, `content`, `keys`, `dele
 
 CREATE TABLE `expenses` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `expense_date` date NOT NULL,
   `prefix_code` varchar(255) DEFAULT NULL,
   `count_id` varchar(255) DEFAULT NULL,
@@ -717,7 +746,7 @@ CREATE TABLE `item_general_quantities` (
 --
 
 INSERT INTO `item_general_quantities` (`id`, `item_id`, `warehouse_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(5344, 408, 1, 34.0000, '2026-05-15 11:34:46', '2026-05-15 11:34:46');
+(5345, 408, 1, 34.0000, '2026-05-15 11:37:43', '2026-05-15 11:37:43');
 
 -- --------------------------------------------------------
 
@@ -791,6 +820,7 @@ CREATE TABLE `item_stock_transfers` (
 
 CREATE TABLE `item_transactions` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `transaction_type` varchar(255) NOT NULL,
   `transaction_id` bigint(20) UNSIGNED NOT NULL,
   `unique_code` varchar(255) NOT NULL,
@@ -823,16 +853,17 @@ CREATE TABLE `item_transactions` (
 -- Dumping data for table `item_transactions`
 --
 
-INSERT INTO `item_transactions` (`id`, `transaction_type`, `transaction_id`, `unique_code`, `transaction_date`, `warehouse_id`, `item_id`, `description`, `tracking_type`, `unit_id`, `mrp`, `quantity`, `unit_price`, `discount`, `discount_amount`, `discount_type`, `tax_id`, `tax_type`, `tax_amount`, `charge_type`, `charge_amount`, `charge_tax_amount`, `total`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 'Item Opening', 408, 'ITEM_OPENING', '2026-03-11', 1, 408, NULL, 'regular', 1, 0.0000, 40.0000, 0.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 0.0000, 1, 1, '2026-03-11 03:23:28', '2026-03-11 03:23:28'),
-(2, 'Sale', 1, 'SALE', '2026-03-11', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-03-11 03:23:35', '2026-03-11 03:23:35'),
-(3, 'Sale', 2, 'SALE', '2026-03-11', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-03-11 05:39:29', '2026-03-11 05:39:29'),
-(4, 'Sale', 3, 'SALE', '2026-03-11', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-03-11 05:40:08', '2026-03-11 05:40:08'),
-(5, 'Sale', 4, 'SALE', '2026-03-11', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-03-11 05:40:26', '2026-03-11 05:40:26'),
-(6, 'Purchase', 1, 'PURCHASE', '2026-03-13', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, 'shipping', 0.0000, 0.0000, 200.0000, 1, 1, '2026-03-12 18:16:46', '2026-03-12 18:16:46'),
-(7, 'Sale', 5, 'SALE', '2026-03-13', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-03-13 05:57:51', '2026-03-13 05:57:51'),
-(8, 'Sale', 1, 'SALE', '2026-05-15', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-05-15 11:22:51', '2026-05-15 11:22:51'),
-(9, 'Sale', 2, 'SALE', '2026-05-15', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-05-15 11:34:45', '2026-05-15 11:34:45');
+INSERT INTO `item_transactions` (`id`, `branch_id`, `transaction_type`, `transaction_id`, `unique_code`, `transaction_date`, `warehouse_id`, `item_id`, `description`, `tracking_type`, `unit_id`, `mrp`, `quantity`, `unit_price`, `discount`, `discount_amount`, `discount_type`, `tax_id`, `tax_type`, `tax_amount`, `charge_type`, `charge_amount`, `charge_tax_amount`, `total`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Item Opening', 408, 'ITEM_OPENING', '2026-03-11', 1, 408, NULL, 'regular', 1, 0.0000, 40.0000, 0.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 0.0000, 1, 1, '2026-03-11 03:23:28', '2026-03-11 03:23:28'),
+(2, 1, 'Sale', 1, 'SALE', '2026-03-11', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-03-11 03:23:35', '2026-03-11 03:23:35'),
+(3, 1, 'Sale', 2, 'SALE', '2026-03-11', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-03-11 05:39:29', '2026-03-11 05:39:29'),
+(4, 1, 'Sale', 3, 'SALE', '2026-03-11', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-03-11 05:40:08', '2026-03-11 05:40:08'),
+(5, 1, 'Sale', 4, 'SALE', '2026-03-11', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-03-11 05:40:26', '2026-03-11 05:40:26'),
+(6, 1, 'Purchase', 1, 'PURCHASE', '2026-03-13', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, 'shipping', 0.0000, 0.0000, 200.0000, 1, 1, '2026-03-12 18:16:46', '2026-03-12 18:16:46'),
+(7, 1, 'Sale', 5, 'SALE', '2026-03-13', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-03-13 05:57:51', '2026-03-13 05:57:51'),
+(8, 1, 'Sale', 1, 'SALE', '2026-05-15', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-05-15 11:22:51', '2026-05-15 11:22:51'),
+(9, 1, 'Sale', 2, 'SALE', '2026-05-15', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-05-15 11:34:45', '2026-05-15 11:34:45'),
+(10, 1, 'Sale Order', 1, 'SALE_ORDER', '2026-05-15', 1, 408, NULL, 'regular', 1, 0.0000, 1.0000, 200.0000, 0.0000, 0.0000, 'percentage', 1, 'exclusive', 0.0000, NULL, 0.0000, 0.0000, 200.0000, 1, 1, '2026-05-15 11:37:43', '2026-05-15 11:37:43');
 
 -- --------------------------------------------------------
 
@@ -2095,6 +2126,7 @@ CREATE TABLE `orders` (
 
 CREATE TABLE `order_payments` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `payment_date` date NOT NULL,
   `order_id` bigint(20) UNSIGNED NOT NULL,
   `payment_type_id` bigint(20) UNSIGNED NOT NULL,
@@ -2116,6 +2148,7 @@ CREATE TABLE `order_payments` (
 
 CREATE TABLE `parties` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `prefix_code` varchar(255) DEFAULT NULL,
   `count_id` varchar(255) DEFAULT NULL,
   `party_code` varchar(255) DEFAULT NULL,
@@ -2151,9 +2184,9 @@ CREATE TABLE `parties` (
 -- Dumping data for table `parties`
 --
 
-INSERT INTO `parties` (`id`, `prefix_code`, `count_id`, `party_code`, `party_type`, `is_wholesale_customer`, `default_party`, `first_name`, `last_name`, `email`, `mobile`, `phone`, `whatsapp`, `billing_address`, `shipping_address`, `note`, `currency_id`, `exchange_rate`, `tax_number`, `tax_type`, `state_id`, `to_pay`, `to_receive`, `is_set_credit_limit`, `credit_limit`, `created_by`, `updated_by`, `status`, `created_at`, `updated_at`) VALUES
-(3, NULL, NULL, NULL, 'supplier', 0, 0, 'Square', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0.0000, NULL, NULL, NULL, 0.0000, 0.0000, 0, 0.0000, 1, 1, 1, '2026-02-11 22:06:07', '2026-02-11 22:06:07'),
-(5, NULL, NULL, NULL, 'customer', 0, 0, 'Walking', 'Customer', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0.0000, NULL, NULL, NULL, 0.0000, 0.0000, 0, 0.0000, 1, 1, 1, '2026-05-15 11:22:30', '2026-05-15 11:22:31');
+INSERT INTO `parties` (`id`, `branch_id`, `prefix_code`, `count_id`, `party_code`, `party_type`, `is_wholesale_customer`, `default_party`, `first_name`, `last_name`, `email`, `mobile`, `phone`, `whatsapp`, `billing_address`, `shipping_address`, `note`, `currency_id`, `exchange_rate`, `tax_number`, `tax_type`, `state_id`, `to_pay`, `to_receive`, `is_set_credit_limit`, `credit_limit`, `created_by`, `updated_by`, `status`, `created_at`, `updated_at`) VALUES
+(3, 1, NULL, NULL, NULL, 'supplier', 0, 0, 'Square', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0.0000, NULL, NULL, NULL, 0.0000, 0.0000, 0, 0.0000, 1, 1, 1, '2026-02-11 22:06:07', '2026-02-11 22:06:07'),
+(5, 1, NULL, NULL, NULL, 'customer', 0, 0, 'Walking', 'Customer', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0.0000, NULL, NULL, NULL, 0.0000, 0.0000, 0, 0.0000, 1, 1, 1, '2026-05-15 11:22:30', '2026-05-15 11:22:31');
 
 -- --------------------------------------------------------
 
@@ -2175,6 +2208,7 @@ CREATE TABLE `party_balance_after_adjustments` (
 
 CREATE TABLE `party_payments` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `transaction_date` date NOT NULL,
   `payment_type_id` bigint(20) UNSIGNED NOT NULL,
   `payment_direction` enum('receive','pay') NOT NULL,
@@ -2208,6 +2242,7 @@ CREATE TABLE `party_payment_allocations` (
 
 CREATE TABLE `party_transactions` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `transaction_date` date NOT NULL,
   `party_id` bigint(20) UNSIGNED NOT NULL,
   `to_pay` decimal(20,4) NOT NULL DEFAULT 0.0000,
@@ -2224,8 +2259,8 @@ CREATE TABLE `party_transactions` (
 -- Dumping data for table `party_transactions`
 --
 
-INSERT INTO `party_transactions` (`id`, `transaction_date`, `party_id`, `to_pay`, `to_receive`, `transaction_type`, `transaction_id`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, '2026-05-15', 5, 0.0000, 0.0000, 'Party Opening', 5, 1, 1, '2026-05-15 11:22:30', '2026-05-15 11:22:30');
+INSERT INTO `party_transactions` (`id`, `branch_id`, `transaction_date`, `party_id`, `to_pay`, `to_receive`, `transaction_type`, `transaction_id`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 1, '2026-05-15', 5, 0.0000, 0.0000, 'Party Opening', 5, 1, 1, '2026-05-15 11:22:30', '2026-05-15 11:22:30');
 
 -- --------------------------------------------------------
 
@@ -2247,6 +2282,7 @@ CREATE TABLE `password_reset_tokens` (
 
 CREATE TABLE `payment_transactions` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `transaction_date` date NOT NULL,
   `payment_type_id` bigint(20) UNSIGNED NOT NULL,
   `transfer_to_payment_type_id` bigint(20) UNSIGNED DEFAULT NULL,
@@ -2267,9 +2303,10 @@ CREATE TABLE `payment_transactions` (
 -- Dumping data for table `payment_transactions`
 --
 
-INSERT INTO `payment_transactions` (`id`, `transaction_date`, `payment_type_id`, `transfer_to_payment_type_id`, `transaction_type`, `type_of_payment`, `transaction_id`, `amount`, `reference_no`, `note`, `payment_from_unique_code`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, '2026-05-15', 1, NULL, 'Sale', NULL, 1, 200.0000, NULL, NULL, 'INVOICE', 1, 1, '2026-05-15 11:22:51', '2026-05-15 11:22:51'),
-(2, '2026-05-15', 1, NULL, 'Sale', NULL, 2, 200.0000, NULL, NULL, 'INVOICE', 1, 1, '2026-05-15 11:34:46', '2026-05-15 11:34:46');
+INSERT INTO `payment_transactions` (`id`, `branch_id`, `transaction_date`, `payment_type_id`, `transfer_to_payment_type_id`, `transaction_type`, `type_of_payment`, `transaction_id`, `amount`, `reference_no`, `note`, `payment_from_unique_code`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 1, '2026-05-15', 1, NULL, 'Sale', NULL, 1, 200.0000, NULL, NULL, 'INVOICE', 1, 1, '2026-05-15 11:22:51', '2026-05-15 11:22:51'),
+(2, 1, '2026-05-15', 1, NULL, 'Sale', NULL, 2, 200.0000, NULL, NULL, 'INVOICE', 1, 1, '2026-05-15 11:34:46', '2026-05-15 11:34:46'),
+(3, 1, '2026-05-15', 1, NULL, 'Sale Order', NULL, 1, 200.0000, NULL, NULL, NULL, 1, 1, '2026-05-15 11:37:43', '2026-05-15 11:37:43');
 
 -- --------------------------------------------------------
 
@@ -2616,6 +2653,7 @@ INSERT INTO `prefix` (`id`, `company_id`, `order`, `service`, `job_code`, `servi
 
 CREATE TABLE `purchases` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `purchase_date` date NOT NULL,
   `prefix_code` varchar(255) DEFAULT NULL,
   `count_id` varchar(255) DEFAULT NULL,
@@ -2648,6 +2686,7 @@ CREATE TABLE `purchases` (
 
 CREATE TABLE `purchase_orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `order_date` date NOT NULL,
   `due_date` date DEFAULT NULL,
   `prefix_code` varchar(255) DEFAULT NULL,
@@ -2676,6 +2715,7 @@ CREATE TABLE `purchase_orders` (
 
 CREATE TABLE `purchase_return` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `return_date` date NOT NULL,
   `prefix_code` varchar(255) DEFAULT NULL,
   `count_id` varchar(255) DEFAULT NULL,
@@ -2703,6 +2743,7 @@ CREATE TABLE `purchase_return` (
 
 CREATE TABLE `quotations` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `quotation_date` date NOT NULL,
   `prefix_code` varchar(255) DEFAULT NULL,
   `count_id` varchar(255) DEFAULT NULL,
@@ -3241,6 +3282,7 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 
 CREATE TABLE `sales` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `sale_date` date NOT NULL,
   `prefix_code` varchar(255) DEFAULT NULL,
   `count_id` varchar(255) DEFAULT NULL,
@@ -3267,9 +3309,9 @@ CREATE TABLE `sales` (
 -- Dumping data for table `sales`
 --
 
-INSERT INTO `sales` (`id`, `sale_date`, `prefix_code`, `count_id`, `sale_code`, `reference_no`, `sale_order_id`, `quotation_id`, `party_id`, `state_id`, `note`, `round_off`, `grand_total`, `paid_amount`, `change_return`, `currency_id`, `exchange_rate`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, '2026-05-15', 'SL/', '1', 'SL/1', NULL, NULL, NULL, 5, NULL, NULL, 0.0000, 200.0000, 200.0000, NULL, 1, 1.0000, 1, 1, '2026-05-15 11:22:50', '2026-05-15 11:22:51'),
-(2, '2026-05-15', 'SL/', '2', 'SL/2', NULL, NULL, NULL, 5, NULL, NULL, 0.0000, 200.0000, 200.0000, 0, 1, 1.0000, 1, 1, '2026-05-15 11:34:45', '2026-05-15 11:34:46');
+INSERT INTO `sales` (`id`, `branch_id`, `sale_date`, `prefix_code`, `count_id`, `sale_code`, `reference_no`, `sale_order_id`, `quotation_id`, `party_id`, `state_id`, `note`, `round_off`, `grand_total`, `paid_amount`, `change_return`, `currency_id`, `exchange_rate`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 1, '2026-05-15', 'SL/', '1', 'SL/1', NULL, NULL, NULL, 5, NULL, NULL, 0.0000, 200.0000, 200.0000, NULL, 1, 1.0000, 1, 1, '2026-05-15 11:22:50', '2026-05-15 11:22:51'),
+(2, 1, '2026-05-15', 'SL/', '2', 'SL/2', NULL, NULL, NULL, 5, NULL, NULL, 0.0000, 200.0000, 200.0000, 0, 1, 1.0000, 1, 1, '2026-05-15 11:34:45', '2026-05-15 11:34:46');
 
 -- --------------------------------------------------------
 
@@ -3279,6 +3321,7 @@ INSERT INTO `sales` (`id`, `sale_date`, `prefix_code`, `count_id`, `sale_code`, 
 
 CREATE TABLE `sale_orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `order_date` date NOT NULL,
   `due_date` date DEFAULT NULL,
   `prefix_code` varchar(255) DEFAULT NULL,
@@ -3299,6 +3342,13 @@ CREATE TABLE `sale_orders` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `sale_orders`
+--
+
+INSERT INTO `sale_orders` (`id`, `branch_id`, `order_date`, `due_date`, `prefix_code`, `count_id`, `order_code`, `order_status`, `party_id`, `state_id`, `note`, `round_off`, `grand_total`, `paid_amount`, `currency_id`, `exchange_rate`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 1, '2026-05-15', NULL, 'SO/', '1', 'SO/1', 'Pending', 5, NULL, NULL, 0.0000, 200.0000, 200.0000, 1, 1.0000, 1, 1, '2026-05-15 11:37:43', '2026-05-15 11:37:43');
+
 -- --------------------------------------------------------
 
 --
@@ -3307,6 +3357,7 @@ CREATE TABLE `sale_orders` (
 
 CREATE TABLE `sale_return` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `return_date` date NOT NULL,
   `prefix_code` varchar(255) DEFAULT NULL,
   `count_id` varchar(255) DEFAULT NULL,
@@ -3486,7 +3537,8 @@ INSERT INTO `status_histories` (`id`, `status_date`, `status`, `note`, `statusab
 (12, '2025-11-20', 'Pending', NULL, 'Purchase Order', 8, 2, 2, '2025-11-19 21:24:12', '2025-11-19 21:24:12'),
 (13, '2025-11-20', 'Pending', NULL, 'Purchase Order', 9, 2, 2, '2025-11-19 21:26:01', '2025-11-19 21:26:01'),
 (14, '2025-11-20', 'Pending', NULL, 'Purchase Order', 10, 2, 2, '2025-11-19 21:33:02', '2025-11-19 21:33:02'),
-(15, '2025-11-20', 'Completed', NULL, 'Purchase Order', 11, 2, 2, '2025-11-19 21:37:02', '2025-11-19 21:37:02');
+(15, '2025-11-20', 'Completed', NULL, 'Purchase Order', 11, 2, 2, '2025-11-19 21:37:02', '2025-11-19 21:37:02'),
+(17, '2026-05-15', 'Pending', NULL, 'Sale Order', 1, 1, 1, '2026-05-15 11:37:43', '2026-05-15 11:37:43');
 
 -- --------------------------------------------------------
 
@@ -3496,6 +3548,7 @@ INSERT INTO `status_histories` (`id`, `status_date`, `status`, `note`, `statusab
 
 CREATE TABLE `stock_adjustments` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `prefix_code` varchar(255) DEFAULT NULL,
   `count_id` varchar(255) DEFAULT NULL,
   `adjustment_code` varchar(255) DEFAULT NULL,
@@ -3622,6 +3675,7 @@ INSERT INTO `units` (`id`, `name`, `short_code`, `description`, `user_id`, `stat
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `username` varchar(255) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
@@ -3643,8 +3697,10 @@ CREATE TABLE `users` (
 --
 -- Dumping data for table `users`
 --
-INSERT INTO `users` (`id`, `username`, `first_name`, `last_name`, `email`, `email_verified_at`, `password`, `role_id`, `avatar`, `status`, `remember_token`, `created_at`, `updated_at`, `created_by`, `updated_by`, `mobile`, `is_allowed_all_warehouses`) VALUES
-(1, 'Admin', 'Super', 'Admin', 'support@projuktisheba.com', NULL, '$2a$12$qbr22RbTC/qfdOCh.yqxuO/tm9ndruDWBu11WbeuMybaGJYLA2TNq', 1, '698b8f51b44d2.png', 1, NULL, '2025-11-02 10:02:26', '2026-02-12 22:12:49', NULL, 1, NULL, 1);
+
+INSERT INTO `users` (`id`, `branch_id`, `username`, `first_name`, `last_name`, `email`, `email_verified_at`, `password`, `role_id`, `avatar`, `status`, `remember_token`, `created_at`, `updated_at`, `created_by`, `updated_by`, `mobile`, `is_allowed_all_warehouses`) VALUES
+(1, 1, 'Admin', 'Super', 'Admin', 'inventory@bytesoft.shop', NULL, '$2y$10$MYYgvXQ4WU8wLTIIf6QVz.4qUJXAT9DgjpmQWLzifDcKhT6lyKk8O', 1, '698b8f51b44d2.png', 1, NULL, '2025-11-02 10:02:26', '2026-02-12 22:12:49', NULL, 1, NULL, 1),
+(7, 1, 'informationtechnology', 'Information', 'Technology', 'itscmrk@gmail.com', NULL, '$2y$10$vDLPOexNiUOSRLRKju8lJOVFvnD9edrlGS.6mT8IBWhrTszERL4lG', 1, NULL, 1, NULL, '2026-03-11 05:43:06', '2026-03-11 05:43:06', 1, 1, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -3733,6 +3789,7 @@ CREATE TABLE `vonage` (
 
 CREATE TABLE `warehouses` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
   `created_by` bigint(20) UNSIGNED DEFAULT NULL,
@@ -3747,8 +3804,8 @@ CREATE TABLE `warehouses` (
 -- Dumping data for table `warehouses`
 --
 
-INSERT INTO `warehouses` (`id`, `name`, `description`, `created_by`, `updated_by`, `status`, `is_deletable`, `created_at`, `updated_at`) VALUES
-(1, 'Main', NULL, NULL, NULL, 1, 0, '2025-11-02 10:02:31', '2025-11-02 10:02:31');
+INSERT INTO `warehouses` (`id`, `branch_id`, `name`, `description`, `created_by`, `updated_by`, `status`, `is_deletable`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Main', NULL, NULL, NULL, 1, 0, '2025-11-02 10:02:31', '2025-11-02 10:02:31');
 
 --
 -- Indexes for dumped tables
@@ -3764,7 +3821,8 @@ ALTER TABLE `accounts`
   ADD KEY `accounts_updated_by_foreign` (`updated_by`),
   ADD KEY `accounts_payment_type_bank_id_foreign` (`payment_type_bank_id`),
   ADD KEY `accounts_expense_category_id_foreign` (`expense_category_id`),
-  ADD KEY `accounts_party_id_foreign` (`party_id`);
+  ADD KEY `accounts_party_id_foreign` (`party_id`),
+  ADD KEY `accounts_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `account_groups`
@@ -3780,7 +3838,8 @@ ALTER TABLE `account_groups`
 ALTER TABLE `account_transactions`
   ADD PRIMARY KEY (`id`),
   ADD KEY `account_transactions_transaction_type_transaction_id_index` (`transaction_type`,`transaction_id`),
-  ADD KEY `account_transactions_account_id_foreign` (`account_id`);
+  ADD KEY `account_transactions_account_id_foreign` (`account_id`),
+  ADD KEY `account_transactions_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `app_settings`
@@ -3797,6 +3856,12 @@ ALTER TABLE `bank_adjustments`
   ADD KEY `payment_type_id` (`payment_type_id`),
   ADD KEY `created_by` (`created_by`),
   ADD KEY `updated_by` (`updated_by`);
+
+--
+-- Indexes for table `branches`
+--
+ALTER TABLE `branches`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `brands`
@@ -3856,7 +3921,8 @@ ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `customers_email_unique` (`email`),
   ADD KEY `customers_created_by_foreign` (`created_by`),
-  ADD KEY `customers_updated_by_foreign` (`updated_by`);
+  ADD KEY `customers_updated_by_foreign` (`updated_by`),
+  ADD KEY `customers_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `domains`
@@ -3880,7 +3946,8 @@ ALTER TABLE `expenses`
   ADD KEY `expenses_expense_category_id_foreign` (`expense_category_id`),
   ADD KEY `expenses_created_by_foreign` (`created_by`),
   ADD KEY `expenses_updated_by_foreign` (`updated_by`),
-  ADD KEY `expenses_expense_subcategory_id_foreign` (`expense_subcategory_id`);
+  ADD KEY `expenses_expense_subcategory_id_foreign` (`expense_subcategory_id`),
+  ADD KEY `expenses_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `expense_categories`
@@ -4028,7 +4095,8 @@ ALTER TABLE `item_transactions`
   ADD KEY `item_transactions_unit_id_foreign` (`unit_id`),
   ADD KEY `item_transactions_tax_id_foreign` (`tax_id`),
   ADD KEY `item_transactions_created_by_foreign` (`created_by`),
-  ADD KEY `item_transactions_updated_by_foreign` (`updated_by`);
+  ADD KEY `item_transactions_updated_by_foreign` (`updated_by`),
+  ADD KEY `item_transactions_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `jobs`
@@ -4091,7 +4159,8 @@ ALTER TABLE `order_payments`
   ADD KEY `order_payments_order_id_foreign` (`order_id`),
   ADD KEY `order_payments_payment_type_id_foreign` (`payment_type_id`),
   ADD KEY `order_payments_created_by_foreign` (`created_by`),
-  ADD KEY `order_payments_updated_by_foreign` (`updated_by`);
+  ADD KEY `order_payments_updated_by_foreign` (`updated_by`),
+  ADD KEY `order_payments_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `parties`
@@ -4101,7 +4170,8 @@ ALTER TABLE `parties`
   ADD KEY `parties_state_id_foreign` (`state_id`),
   ADD KEY `parties_created_by_foreign` (`created_by`),
   ADD KEY `parties_updated_by_foreign` (`updated_by`),
-  ADD KEY `parties_currency_id_foreign` (`currency_id`);
+  ADD KEY `parties_currency_id_foreign` (`currency_id`),
+  ADD KEY `parties_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `party_balance_after_adjustments`
@@ -4119,7 +4189,8 @@ ALTER TABLE `party_payments`
   ADD KEY `party_payments_payment_type_id_foreign` (`payment_type_id`),
   ADD KEY `party_payments_party_id_foreign` (`party_id`),
   ADD KEY `party_payments_created_by_foreign` (`created_by`),
-  ADD KEY `party_payments_updated_by_foreign` (`updated_by`);
+  ADD KEY `party_payments_updated_by_foreign` (`updated_by`),
+  ADD KEY `party_payments_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `party_payment_allocations`
@@ -4137,7 +4208,8 @@ ALTER TABLE `party_transactions`
   ADD KEY `party_transactions_party_id_foreign` (`party_id`),
   ADD KEY `party_transactions_transaction_type_transaction_id_index` (`transaction_type`,`transaction_id`),
   ADD KEY `party_transactions_created_by_foreign` (`created_by`),
-  ADD KEY `party_transactions_updated_by_foreign` (`updated_by`);
+  ADD KEY `party_transactions_updated_by_foreign` (`updated_by`),
+  ADD KEY `party_transactions_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `password_reset_tokens`
@@ -4154,7 +4226,8 @@ ALTER TABLE `payment_transactions`
   ADD KEY `payment_transactions_transfer_to_payment_type_id_foreign` (`transfer_to_payment_type_id`),
   ADD KEY `payment_transactions_transaction_type_transaction_id_index` (`transaction_type`,`transaction_id`),
   ADD KEY `payment_transactions_created_by_foreign` (`created_by`),
-  ADD KEY `payment_transactions_updated_by_foreign` (`updated_by`);
+  ADD KEY `payment_transactions_updated_by_foreign` (`updated_by`),
+  ADD KEY `payment_transactions_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `payment_types`
@@ -4205,7 +4278,8 @@ ALTER TABLE `purchases`
   ADD KEY `purchases_created_by_foreign` (`created_by`),
   ADD KEY `purchases_updated_by_foreign` (`updated_by`),
   ADD KEY `purchases_currency_id_foreign` (`currency_id`),
-  ADD KEY `purchases_carrier_id_foreign` (`carrier_id`);
+  ADD KEY `purchases_carrier_id_foreign` (`carrier_id`),
+  ADD KEY `purchases_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `purchase_orders`
@@ -4216,7 +4290,8 @@ ALTER TABLE `purchase_orders`
   ADD KEY `purchase_orders_state_id_foreign` (`state_id`),
   ADD KEY `purchase_orders_created_by_foreign` (`created_by`),
   ADD KEY `purchase_orders_updated_by_foreign` (`updated_by`),
-  ADD KEY `purchase_orders_currency_id_foreign` (`currency_id`);
+  ADD KEY `purchase_orders_currency_id_foreign` (`currency_id`),
+  ADD KEY `purchase_orders_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `purchase_return`
@@ -4227,7 +4302,8 @@ ALTER TABLE `purchase_return`
   ADD KEY `purchase_return_state_id_foreign` (`state_id`),
   ADD KEY `purchase_return_created_by_foreign` (`created_by`),
   ADD KEY `purchase_return_updated_by_foreign` (`updated_by`),
-  ADD KEY `purchase_return_currency_id_foreign` (`currency_id`);
+  ADD KEY `purchase_return_currency_id_foreign` (`currency_id`),
+  ADD KEY `purchase_return_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `quotations`
@@ -4238,7 +4314,8 @@ ALTER TABLE `quotations`
   ADD KEY `quotations_state_id_foreign` (`state_id`),
   ADD KEY `quotations_created_by_foreign` (`created_by`),
   ADD KEY `quotations_updated_by_foreign` (`updated_by`),
-  ADD KEY `quotations_currency_id_foreign` (`currency_id`);
+  ADD KEY `quotations_currency_id_foreign` (`currency_id`),
+  ADD KEY `quotations_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `roles`
@@ -4267,7 +4344,8 @@ ALTER TABLE `sales`
   ADD KEY `sales_created_by_foreign` (`created_by`),
   ADD KEY `sales_updated_by_foreign` (`updated_by`),
   ADD KEY `sales_quotation_id_foreign` (`quotation_id`),
-  ADD KEY `sales_currency_id_foreign` (`currency_id`);
+  ADD KEY `sales_currency_id_foreign` (`currency_id`),
+  ADD KEY `sales_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `sale_orders`
@@ -4278,7 +4356,8 @@ ALTER TABLE `sale_orders`
   ADD KEY `sale_orders_state_id_foreign` (`state_id`),
   ADD KEY `sale_orders_created_by_foreign` (`created_by`),
   ADD KEY `sale_orders_updated_by_foreign` (`updated_by`),
-  ADD KEY `sale_orders_currency_id_foreign` (`currency_id`);
+  ADD KEY `sale_orders_currency_id_foreign` (`currency_id`),
+  ADD KEY `sale_orders_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `sale_return`
@@ -4289,7 +4368,8 @@ ALTER TABLE `sale_return`
   ADD KEY `sale_return_state_id_foreign` (`state_id`),
   ADD KEY `sale_return_created_by_foreign` (`created_by`),
   ADD KEY `sale_return_updated_by_foreign` (`updated_by`),
-  ADD KEY `sale_return_currency_id_foreign` (`currency_id`);
+  ADD KEY `sale_return_currency_id_foreign` (`currency_id`),
+  ADD KEY `sale_return_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `services`
@@ -4333,7 +4413,8 @@ ALTER TABLE `status_histories`
 ALTER TABLE `stock_adjustments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `stock_adjustments_created_by_foreign` (`created_by`),
-  ADD KEY `stock_adjustments_updated_by_foreign` (`updated_by`);
+  ADD KEY `stock_adjustments_updated_by_foreign` (`updated_by`),
+  ADD KEY `stock_adjustments_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `stock_transfers`
@@ -4381,7 +4462,8 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`),
   ADD KEY `users_role_id_foreign` (`role_id`),
   ADD KEY `users_created_by_foreign` (`created_by`),
-  ADD KEY `users_updated_by_foreign` (`updated_by`);
+  ADD KEY `users_updated_by_foreign` (`updated_by`),
+  ADD KEY `users_branch_fk` (`branch_id`);
 
 --
 -- Indexes for table `user_warehouses`
@@ -4409,7 +4491,8 @@ ALTER TABLE `vonage`
 ALTER TABLE `warehouses`
   ADD PRIMARY KEY (`id`),
   ADD KEY `warehouses_created_by_foreign` (`created_by`),
-  ADD KEY `warehouses_updated_by_foreign` (`updated_by`);
+  ADD KEY `warehouses_updated_by_foreign` (`updated_by`),
+  ADD KEY `warehouses_branch_fk` (`branch_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -4444,6 +4527,12 @@ ALTER TABLE `app_settings`
 --
 ALTER TABLE `bank_adjustments`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `branches`
+--
+ALTER TABLE `branches`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `brands`
@@ -4569,7 +4658,7 @@ ALTER TABLE `item_categories`
 -- AUTO_INCREMENT for table `item_general_quantities`
 --
 ALTER TABLE `item_general_quantities`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5345;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5346;
 
 --
 -- AUTO_INCREMENT for table `item_serial_masters`
@@ -4599,7 +4688,7 @@ ALTER TABLE `item_stock_transfers`
 -- AUTO_INCREMENT for table `item_transactions`
 --
 ALTER TABLE `item_transactions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `jobs`
@@ -4671,7 +4760,7 @@ ALTER TABLE `party_transactions`
 -- AUTO_INCREMENT for table `payment_transactions`
 --
 ALTER TABLE `payment_transactions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `payment_types`
@@ -4743,7 +4832,7 @@ ALTER TABLE `sales`
 -- AUTO_INCREMENT for table `sale_orders`
 --
 ALTER TABLE `sale_orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sale_return`
@@ -4779,7 +4868,7 @@ ALTER TABLE `states`
 -- AUTO_INCREMENT for table `status_histories`
 --
 ALTER TABLE `status_histories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `stock_adjustments`
@@ -4840,6 +4929,130 @@ ALTER TABLE `vonage`
 --
 ALTER TABLE `warehouses`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `accounts`
+--
+ALTER TABLE `accounts`
+  ADD CONSTRAINT `accounts_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `account_transactions`
+--
+ALTER TABLE `account_transactions`
+  ADD CONSTRAINT `account_transactions_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `customers`
+--
+ALTER TABLE `customers`
+  ADD CONSTRAINT `customers_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `expenses`
+--
+ALTER TABLE `expenses`
+  ADD CONSTRAINT `expenses_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `item_transactions`
+--
+ALTER TABLE `item_transactions`
+  ADD CONSTRAINT `item_transactions_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `order_payments`
+--
+ALTER TABLE `order_payments`
+  ADD CONSTRAINT `order_payments_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `parties`
+--
+ALTER TABLE `parties`
+  ADD CONSTRAINT `parties_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `party_payments`
+--
+ALTER TABLE `party_payments`
+  ADD CONSTRAINT `party_payments_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `party_transactions`
+--
+ALTER TABLE `party_transactions`
+  ADD CONSTRAINT `party_transactions_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `payment_transactions`
+--
+ALTER TABLE `payment_transactions`
+  ADD CONSTRAINT `payment_transactions_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `purchases`
+--
+ALTER TABLE `purchases`
+  ADD CONSTRAINT `purchases_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `purchase_orders`
+--
+ALTER TABLE `purchase_orders`
+  ADD CONSTRAINT `purchase_orders_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `purchase_return`
+--
+ALTER TABLE `purchase_return`
+  ADD CONSTRAINT `purchase_return_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `quotations`
+--
+ALTER TABLE `quotations`
+  ADD CONSTRAINT `quotations_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `sales`
+--
+ALTER TABLE `sales`
+  ADD CONSTRAINT `sales_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `sale_orders`
+--
+ALTER TABLE `sale_orders`
+  ADD CONSTRAINT `sale_orders_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `sale_return`
+--
+ALTER TABLE `sale_return`
+  ADD CONSTRAINT `sale_return_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `stock_adjustments`
+--
+ALTER TABLE `stock_adjustments`
+  ADD CONSTRAINT `stock_adjustments_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `warehouses`
+--
+ALTER TABLE `warehouses`
+  ADD CONSTRAINT `warehouses_branch_fk` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
