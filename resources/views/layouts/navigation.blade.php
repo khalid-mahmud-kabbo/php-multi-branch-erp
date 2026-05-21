@@ -823,6 +823,13 @@
 						</li>
 					</ul>
 					@endcanany
+					@canany(['app.settings.branch'])
+					<ul>
+						<li class="{{ request()->is('settings/manage-branch') ? 'mm-active' : '' }}">
+							<a href="{{ route('branch.create') }}"><i class='bx bx-radio-circle'></i>{{ __('app.branch_settings') }}</a>
+						</li>
+					</ul>
+					@endcanany
 					@canany(['company.edit'])
 					<ul>
 						<li class="{{ request()->is('company') ? 'mm-active' : '' }}">

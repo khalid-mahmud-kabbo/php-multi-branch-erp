@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Http\Controllers\Accounts\AccountController;
 use App\Http\Controllers\Accounts\AccountGroupController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\Expenses\ExpenseCategoryController;
@@ -1913,6 +1914,36 @@ Route::middleware('auth')->group(function () {
                 ->middleware('can:carrier.delete')
                 ->name('carrier.delete');//delete operation
     });//Carriers
+
+
+
+
+
+    Route::group(['prefix' => 'branch'], function () {
+        Route::get('/create', [BranchController::class, 'create'])
+                ->middleware('can:branch.create')
+                ->name('branch.create');//View
+        Route::get('/edit/{id}', [BranchController::class, 'edit'])
+                ->middleware('can:branch.edit')
+                ->name('branch.edit'); //Edit
+        Route::put('/update', [BranchController::class, 'update'])->name('branch.update'); //Update
+        Route::get('/list', [BranchController::class, 'list'])
+                ->middleware('can:branch.view')
+                ->name('branch.list'); //List
+        Route::get('/datatable-list', [BranchController::class, 'datatableList'])->name('branch.datatable.list'); //Datatable List
+        Route::post('/store', [BranchController::class, 'store'])->name('branch.store');//Save operation
+        Route::post('/delete/', [BranchController::class, 'delete'])
+                ->middleware('can:branch.delete')
+                ->name('branch.delete');//delete operation
+    });
+
+
+
+
+
+
+
+
 
 });
 

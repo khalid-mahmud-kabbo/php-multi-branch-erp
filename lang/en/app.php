@@ -12,6 +12,17 @@ return [
     */ 
 
     'settings' 						    => 'Settings',
+    'branch_details' 			    => 'Branch Details',
+    'branch_list' 					    => 'Branch List',
+    'branch_settings' 				    => 'Branch Settings',
+    'create_branch' 				    => 'Create Branch',
+    'branch_name' 					    => 'Branch Name',
+    'branch_code' 					    => 'Branch Code',
+    'branch_address' 				    => 'Branch Address',
+    'branch_email' 					    => 'Branch Email',
+    'branch_phone' 					    => 'Branch Phone',
+    'branch_status' 				    => 'Branch Status',
+    'branch_manager' 				    => 'Branch Manager',
     'is_saudi'                          => 'Is Invoice For Saudi',
     'return_amount'                     => 'Return Amount',
     'app_settings' 						=> 'App Settings',

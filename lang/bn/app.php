@@ -12,6 +12,7 @@ return [
     */
 
     'settings' 						    => 'সেটিংস',
+    'branch_settings' 				    => 'ব্রান্চ সেটিংস',
     'is_saudi'                          => 'ইস সাউদি',
     'app_settings' 						=> 'অ্যাপ সেটিংস',
     'application_name' 					=> 'অ্যাপ্লিকেশনের নাম',

@@ -16,11 +16,12 @@ class Branch extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'adjustment_type',
-        'adjustment_date',
-        'payment_type_id',
-        'amount',
-        'note',
+        'name',
+        'code',
+        'email',
+        'phone',
+        'address',
+        'status',
     ];
 
     /**
