@@ -31,7 +31,7 @@ class BranchController extends Controller
      */
     public function edit($id) : View {
 
-        $carrier = Branch::find($id);
+        $branch = Branch::find($id);
 
         return view('branch.edit', compact('branch'));
     }
@@ -75,7 +75,7 @@ class BranchController extends Controller
     }
 
     public function list() : View {
-        return view('carrier.list');
+        return view('branch.list');
     }
 
     public function datatableList(Request $request){
@@ -87,14 +87,26 @@ class BranchController extends Controller
                     ->addColumn('created_at', function ($row) {
                         return $row->created_at->format(app('company')['date_format']);
                     })
-                    ->addColumn('branch_name', function ($row) {
-                        return $row->name??'';
+                    ->addColumn('username', function ($row) {
+                        return $row->user->username??'';
+                    })
+                    ->addColumn('name', function ($row) {
+                        return $row->name;
+                    })
+                    ->addColumn('code', function ($row) {
+                        return $row->code;
+                    })
+                    ->addColumn('phone', function ($row) {
+                        return $row->code;
+                    })
+                    ->addColumn('email', function ($row) {
+                        return $row->code;
                     })
                     ->addColumn('action', function($row){
                             $id = $row->id;
 
-                            $editUrl = route('carrier.edit', ['id' => $id]);
-                            $deleteUrl = route('carrier.delete', ['id' => $id]);
+                            $editUrl = route('branch.edit', ['id' => $id]);
+                            $deleteUrl = route('branch.delete', ['id' => $id]);
 
 
                             $actionBtn = '<div class="dropdown ms-auto">

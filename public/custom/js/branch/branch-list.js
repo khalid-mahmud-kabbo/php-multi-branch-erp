@@ -19,7 +19,7 @@ $(function() {
             serverSide: true,
             method:'get',
             ajax: {
-                    url: baseURL+'/carrier/datatable-list',
+                    url: baseURL+'/branch/datatable-list',
                 },
             columns: [
                 {targets: 0, data:'id', orderable:true, visible:false},
@@ -33,8 +33,8 @@ $(function() {
                 },
 
                 {data: 'name', name: 'name',},
-                {data: "mobile", name: "mobile"},
-                {data: "whatsapp", name: "whatsapp"},
+                {data: "code", name: "code"},
+                {data: "phone", name: "phone"},
                 {data: "email", name: "email"},
                 {
                     data: 'status',

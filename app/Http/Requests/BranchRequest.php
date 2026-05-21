@@ -42,17 +42,17 @@ class BranchRequest extends FormRequest
         if ($this->isMethod('PUT')) {
             $carrierId                     = $this->input('id');
             $rulesArray['id']           = ['required'];
-            $rulesArray['name']       = ['required', 'string', 'max:100', Rule::unique('branch')->ignore($carrierId)];
-            $rulesArray['code']       = ['nullable', 'string', 'max:20', Rule::unique('branch')->ignore($carrierId)];
-            $rulesArray['email']        = ['nullable', 'email', 'max:100', Rule::unique('branch')->ignore($carrierId)];
-            $rulesArray['phone']       = ['nullable', 'string', 'max:20', Rule::unique('branch')->ignore($carrierId)];
-            $rulesArray['address']     = ['nullable', 'string', 'max:20', Rule::unique('branch')->ignore($carrierId)];
+            $rulesArray['name']       = ['required', 'string', 'max:100', Rule::unique('branches')->ignore($carrierId)];
+            $rulesArray['code']       = ['nullable', 'string', 'max:20', Rule::unique('branches')->ignore($carrierId)];
+            $rulesArray['email']        = ['nullable', 'email', 'max:100', Rule::unique('branches')->ignore($carrierId)];
+            $rulesArray['phone']       = ['nullable', 'string', 'max:20', Rule::unique('branches')->ignore($carrierId)];
+            $rulesArray['address']     = ['nullable', 'string', 'max:20', Rule::unique('branches')->ignore($carrierId)];
             }else{
-            $rulesArray['name']       = ['required', 'string', 'max:100', Rule::unique('branch')];
-            $rulesArray['code']       = ['nullable', 'string', 'max:20', Rule::unique('branch')];
-            $rulesArray['email']        = ['nullable', 'email', 'email', 'max:255', Rule::unique('branch')];
-            $rulesArray['phone']       = ['nullable', 'string', 'max:20', Rule::unique('branch')];
-            $rulesArray['address']     = ['nullable', 'string', 'max:20', Rule::unique('branch')];
+            $rulesArray['name']       = ['required', 'string', 'max:100', Rule::unique('branches')];
+            $rulesArray['code']       = ['nullable', 'string', 'max:20', Rule::unique('branches')];
+            $rulesArray['email']        = ['nullable', 'email', 'email', 'max:255', Rule::unique('branches')];
+            $rulesArray['phone']       = ['nullable', 'string', 'max:20', Rule::unique('branches')];
+            $rulesArray['address']     = ['nullable', 'string', 'max:20', Rule::unique('branches')];
         }
 
         return $rulesArray;

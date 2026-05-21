@@ -13,6 +13,7 @@ return [
 
     'settings' 						    => 'Settings',
     'branch_details' 			    => 'Branch Details',
+    'branch' 						    => 'Branch',
     'branch_list' 					    => 'Branch List',
     'branch_settings' 				    => 'Branch Settings',
     'create_branch' 				    => 'Create Branch',
@@ -22,6 +23,7 @@ return [
     'branch_email' 					    => 'Branch Email',
     'branch_phone' 					    => 'Branch Phone',
     'branch_status' 				    => 'Branch Status',
+    'branch_update' 				    => 'Branch Update',
     'branch_manager' 				    => 'Branch Manager',
     'is_saudi'                          => 'Is Invoice For Saudi',
     'return_amount'                     => 'Return Amount',

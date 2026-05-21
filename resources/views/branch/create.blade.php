@@ -1,14 +1,14 @@
 @extends('layouts.app')
-@section('title', __('app.branch_create'))
+@section('title', __('app.create_branch'))
 
 		@section('content')
 		<!--start page wrapper -->
 		<div class="page-wrapper">
 			<div class="page-content">
 				<x-breadcrumb :langArray="[
-											'app.branch_settings',
+											'app.branch',
 											'app.branch_list',
-											'app.branch_create',
+											'app.create_branch',
 										]"/>
 				<div class="row">
 					<div class="col-12 col-lg-12">
