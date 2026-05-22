@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use App\Models\Branch;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use App\Models\Items\Item;
@@ -145,5 +147,15 @@ class AppServiceProvider extends ServiceProvider
             'Quotation'                =>  Quotation::class,//Used in ItemTransaction class,
 
         ]);
+
+        View::composer('*', function ($view) {
+
+    if (auth()->check()) {
+
+        $branches = Branch::where('status', 1)->get();
+
+        $view->with('branches', $branches);
+    }
+});
     }
 }

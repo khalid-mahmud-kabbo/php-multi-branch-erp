@@ -20,6 +20,7 @@ class Carrier extends Model
     protected $fillable = [
         'name',
         'email',
+        'branch_id',
         'mobile',
         'phone',
         'whatsapp',

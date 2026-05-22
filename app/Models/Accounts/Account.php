@@ -25,7 +25,7 @@ class Account extends Model
         'group_id',
         'expense_category_id',
         'party_id',
-        
+        'branch_id',
         'payment_type_bank_id',
         'is_deletable',
     ];

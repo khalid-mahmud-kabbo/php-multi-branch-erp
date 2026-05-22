@@ -36,6 +36,7 @@ class Quotation extends Model
      */
     protected $fillable = [
         'quotation_date',
+        'branch_id',
         'prefix_code',
         'count_id',
         'quotation_code',

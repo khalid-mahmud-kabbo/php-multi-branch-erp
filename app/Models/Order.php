@@ -29,6 +29,7 @@ class Order extends Model
      */
     protected $fillable = [
         'party_id',
+        'branch_id',
         'order_date',
         'prefix_code',
         'count_id',

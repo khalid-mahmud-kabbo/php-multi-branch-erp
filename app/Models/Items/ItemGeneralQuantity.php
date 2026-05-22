@@ -21,6 +21,7 @@ class ItemGeneralQuantity extends Model
      */
     protected $fillable = [
         'item_id',
+        'branch_id',
         'warehouse_id',
         'quantity',
     ];

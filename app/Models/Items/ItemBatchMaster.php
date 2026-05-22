@@ -25,6 +25,7 @@ class ItemBatchMaster extends Model
      */
     protected $fillable = [
         'item_id',
+        'branch_id',
         'batch_no',
         'mfg_date',
         'exp_date',

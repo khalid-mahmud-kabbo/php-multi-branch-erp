@@ -15,6 +15,7 @@ class AccountTransaction extends Model
     protected $fillable = [
         'transaction_date',
         'amount',
+        'branch_id',
         'account_id',
         'credit_amount',
         'debit_amount',

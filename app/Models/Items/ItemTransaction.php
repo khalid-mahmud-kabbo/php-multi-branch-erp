@@ -43,24 +43,18 @@ class ItemTransaction extends Model
         'description',
         'tracking_type',
         'item_location',
-
+        'branch_id',
         'unit_price',
-
         'mrp',
-
         'quantity',
-
         'discount',
         'discount_type',
         'discount_amount',
-
         'tax_id',
         'tax_type',
         'tax_amount',
-
         'charge_type',
         'charge_amount',
-
         'total',
     ];
 

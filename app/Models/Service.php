@@ -22,6 +22,7 @@ class Service extends Model
      */
     protected $fillable = [
         'name',
+        'branch_id',
         'description',
         'unit_price',
         'tax_id',

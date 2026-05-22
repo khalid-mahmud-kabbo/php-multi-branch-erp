@@ -36,6 +36,7 @@ class PurchaseReturn extends Model
      */
     protected $fillable = [
         'return_date',
+        'branch_id',
         'purchase_id',
         'prefix_code',
         'count_id',

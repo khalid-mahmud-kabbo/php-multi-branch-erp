@@ -23,6 +23,7 @@ class ChequeTransaction extends Model
      */
     protected $fillable = [
         'transaction_date',
+        'branch_id',
         'cheque_no',
         'payment_transaction_id',
         'transfer_to_payment_type_id',

@@ -22,6 +22,7 @@ class ExpenseItemMaster extends Model
      */
     protected $fillable = [
         'name',
+        'branch_id',
         'unit_price',
     ];
 

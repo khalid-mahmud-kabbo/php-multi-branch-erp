@@ -22,6 +22,7 @@ class UserWarehouse extends Model
      */
     protected $fillable = [
         'user_id',
+        'branch_id',
         'warehouse_id',
     ];
 

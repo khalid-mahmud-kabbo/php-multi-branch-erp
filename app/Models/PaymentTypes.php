@@ -19,6 +19,7 @@ class PaymentTypes extends Model
      */
     protected $fillable = [
         'name',
+        'branch_id',
         'account_number',
         'bank_code',
         'unique_code',

@@ -20,6 +20,7 @@ class ItemSerialMaster extends Model
      */
     protected $fillable = [
         'item_id',
+        'branch_id',
         'serial_code',
         'current_status',
     ];

@@ -26,7 +26,7 @@ class Item extends Model
      */
     protected $fillable = [
         'is_service',
-
+        'branch_id',
         'count_id',
         'item_code',
         'name',

@@ -29,6 +29,7 @@ class StockAdjustment extends Model
      */
     protected $fillable = [
         'adjustment_date',
+        'branch_id',
         'prefix_code',
         'count_id',
         'reference_no',

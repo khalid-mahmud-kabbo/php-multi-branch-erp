@@ -36,6 +36,7 @@ class Expense extends Model
      */
     protected $fillable = [
         'expense_category_id',
+        'branch_id',
         'expense_subcategory_id',
         'expense_date',
         'prefix_code',

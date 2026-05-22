@@ -41,7 +41,7 @@ class PurchaseOrder extends Model
         'prefix_code',
         'count_id',
         'order_code',
-        //'warehouse_id',
+        'branch_id',
         'party_id',
         'state_id',
         'note',

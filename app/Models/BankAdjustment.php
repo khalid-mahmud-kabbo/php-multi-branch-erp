@@ -20,6 +20,7 @@ class BankAdjustment extends Model
      */
     protected $fillable = [
         'adjustment_type',
+        'branch_id',
         'adjustment_date',
         'payment_type_id',
         'amount',

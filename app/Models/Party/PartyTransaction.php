@@ -25,6 +25,7 @@ class PartyTransaction extends Model
      */
     protected $fillable = [
         'transaction_date',
+        'branch_id',
         'party_id',
         'to_pay',
         'to_receive',

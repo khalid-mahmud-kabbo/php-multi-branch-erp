@@ -36,6 +36,7 @@ class Purchase extends Model
      */
     protected $fillable = [
         'purchase_date',
+        'branch_id',
         'purchase_order_id',
         'prefix_code',
         'count_id',

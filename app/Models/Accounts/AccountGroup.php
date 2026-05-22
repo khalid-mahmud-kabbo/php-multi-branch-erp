@@ -21,6 +21,7 @@ class AccountGroup extends Model
      */
     protected $fillable = [
         'name',
+        'branch_id',
         'description',
         'parent_id',
     ];

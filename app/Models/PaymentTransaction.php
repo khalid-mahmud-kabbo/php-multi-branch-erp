@@ -37,6 +37,7 @@ class PaymentTransaction extends Model
      */
     protected $fillable = [
         'transaction_date',
+        'branch_id',
         'transaction_id',
         'transaction_type',
         'payment_type_id',

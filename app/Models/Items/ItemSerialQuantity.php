@@ -21,6 +21,7 @@ class ItemSerialQuantity extends Model
      */
     protected $fillable = [
         'item_id',
+        'branch_id',
         'warehouse_id',
         'item_serial_master_id',
     ];

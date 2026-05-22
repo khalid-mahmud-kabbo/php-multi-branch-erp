@@ -22,6 +22,7 @@ class OrderPayment extends Model
      */
     protected $fillable = [
         'payment_date',
+        'branch_id',
         'order_id',
         'payment_type_id',
         'amount',

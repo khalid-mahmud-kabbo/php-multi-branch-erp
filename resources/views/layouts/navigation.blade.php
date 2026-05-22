@@ -10,6 +10,21 @@
 				<div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>
 				</div>
 			 </div>
+
+			@if(auth()->user()->isSuperAdmin() || auth()->user()->isManager())
+				<form method="POST" action="{{ route('branch.switch') }}">
+					@csrf
+					<select name="branch_id" onchange="this.form.submit()">
+						@foreach($branches as $branch)
+							<option value="{{ $branch->id }}"
+								{{ session('branch_id') == $branch->id ? 'selected' : '' }}>
+								{{ $branch->name }}
+							</option>
+						@endforeach
+					</select>
+				</form>
+			@endif
+
 			<!--navigation-->
 			<ul class="metismenu" id="menu">
 				<li>

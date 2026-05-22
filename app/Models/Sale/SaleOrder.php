@@ -36,6 +36,7 @@ class SaleOrder extends Model
      */
     protected $fillable = [
         'order_date',
+        'branch_id',
         'due_date',
         'prefix_code',
         'count_id',

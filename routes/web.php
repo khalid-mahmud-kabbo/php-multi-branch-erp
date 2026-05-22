@@ -1935,6 +1935,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/delete/', [BranchController::class, 'delete'])
                 ->middleware('can:branch.delete')
                 ->name('branch.delete');//delete operation
+        Route::post('/switch', [BranchController::class, 'switchBranch'])
+            ->name('branch.switch')
+            ->middleware('auth');
     });
 
 

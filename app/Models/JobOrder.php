@@ -20,6 +20,7 @@ class JobOrder extends Model
      */
     protected $fillable = [
         'date',
+        'branch_id',
         'order_id',
         'ordered_product_id',
         'user_id',

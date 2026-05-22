@@ -24,6 +24,7 @@ class ExpenseCategory extends Model
      */
     protected $fillable = [
         'name',
+        'branch_id',
         'description',
         'account_group_id',
     ];

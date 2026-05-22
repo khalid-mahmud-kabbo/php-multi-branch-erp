@@ -37,6 +37,7 @@ class SaleReturn extends Model
      */
     protected $fillable = [
         'return_date',
+        'branch_id',
         'sale_id',
         'prefix_code',
         'count_id',

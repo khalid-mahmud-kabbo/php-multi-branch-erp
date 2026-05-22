@@ -31,6 +31,7 @@ class PartyPayment extends Model
      */
     protected $fillable = [
         'transaction_date',
+        'branch_id',
         'party_id',
         'payment_type_id',
         'payment_direction',

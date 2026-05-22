@@ -21,6 +21,7 @@ class ItemBatchQuantity extends Model
      */
     protected $fillable = [
         'item_id',
+        'branch_id',
         'warehouse_id',
         'item_batch_master_id',
         'quantity',

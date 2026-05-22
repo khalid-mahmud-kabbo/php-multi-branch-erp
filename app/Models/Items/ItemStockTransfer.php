@@ -24,6 +24,7 @@ class ItemStockTransfer extends Model
     protected $fillable = [
         'stock_transfer_id',
         'item_id',
+        'branch_id',
         'from_warehouse_id',
         'to_warehouse_id',
         'from_item_transaction_id',

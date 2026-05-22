@@ -18,6 +18,7 @@ class ItemSerial extends Model
      */
     protected $fillable = [
         'item_transaction_id',
+        'branch_id',
         'serial_code',
         'stock_in',
     ];

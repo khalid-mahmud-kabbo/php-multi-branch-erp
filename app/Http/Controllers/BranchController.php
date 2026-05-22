@@ -10,10 +10,28 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Database\QueryException;
 
 use App\Models\Branch;
+use App\Models\User;
 
 
 class BranchController extends Controller
 {
+
+
+
+       /** @var User $user */  // ← tells Intelephense auth()->user()
+    public function switchBranch(Branch $branch)
+    {
+        /** @var User $user */
+        $user = auth()->user();
+
+        abort_unless($user->isSuperAdmin() || $user->isManager(), 403);
+
+        session(['branch_id' => $branch->id]);
+
+        return redirect()->back()->with('success', 'Switched to ' . $branch->name);
+    }
+
+
     /**
      * Create a new carrier.
      *

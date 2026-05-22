@@ -23,6 +23,7 @@ class ItemSerialTransaction extends Model
      */
     protected $fillable = [
         'item_transaction_id',
+        'branch_id',
         'item_serial_master_id',
         'warehouse_id',
         'item_id',

@@ -23,6 +23,7 @@ class ItemBatchTransaction extends Model
      */
     protected $fillable = [
         'item_transaction_id',
+        'branch_id',
         'item_batch_master_id',
         'warehouse_id',
         'item_id',

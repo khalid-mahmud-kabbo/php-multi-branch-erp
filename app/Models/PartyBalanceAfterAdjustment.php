@@ -22,6 +22,7 @@ class PartyBalanceAfterAdjustment extends Model
      */
     protected $fillable = [
         'party_payment_id',
+        'branch_id',
         'payment_transaction_id',
     ];
 

@@ -22,6 +22,7 @@ class Brand extends Model
      */
     protected $fillable = [
         'name',
+        'branch_id',
         'description',
         'status',
     ];

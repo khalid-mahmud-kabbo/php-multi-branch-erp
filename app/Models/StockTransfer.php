@@ -31,6 +31,7 @@ class StockTransfer extends Model
      */
     protected $fillable = [
         'transfer_date',
+        'branch_id',
         'prefix_code',
         'count_id',
         'transfer_code',
