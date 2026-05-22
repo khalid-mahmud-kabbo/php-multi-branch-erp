@@ -11,19 +11,7 @@
 				</div>
 			 </div>
 
-			@if(auth()->user()->isSuperAdmin() || auth()->user()->isManager())
-				<form method="POST" action="{{ route('branch.switch') }}">
-					@csrf
-					<select name="branch_id" onchange="this.form.submit()">
-						@foreach($branches as $branch)
-							<option value="{{ $branch->id }}"
-								{{ session('branch_id') == $branch->id ? 'selected' : '' }}>
-								{{ $branch->name }}
-							</option>
-						@endforeach
-					</select>
-				</form>
-			@endif
+			
 
 			<!--navigation-->
 			<ul class="metismenu" id="menu">
@@ -676,23 +664,7 @@
 							</li>
 						@endcanany
 
-						{{-- @canany(['report.transaction.cashflow', 'report.transaction.bank-statement'])
-							<li> <a class="has-arrow" href="javascript:;"><i class='bx bx-radio-circle'></i>{{ __('app.ladgerbook') }}</a>
-										<ul>
-											@can('report.transaction.cashflow')
-											<li class="{{ request()->is('report/transaction/cashflow') ? 'mm-active' : '' }}">
-												<a href="{{ route('report.transaction.cashflow') }}"><i class='bx bx-radio-circle'></i>{{ __('payment.cash_flow') }}</a>
-											</li>
-											@endcan
-											@can('report.transaction.bank-statement')
-											<li class="{{ request()->is('report/transaction/bank-statement') ? 'mm-active' : '' }}">
-												<a href="{{ route('report.transaction.bank-statement') }}"><i class='bx bx-radio-circle'></i>{{ __('payment.bank_statement') }}</a>
-											</li>
-											@endcan
-										</ul>
-							</li>
-						@endcanany
- --}}
+					
 
 
 
@@ -893,13 +865,30 @@
 
                 <li class="menu-label">OTHER</li>
 
-                <li class="bg-light">
+
+
+				@if(auth()->user()->isSuperAdmin() || auth()->user()->isManager())
+				<form method="POST" action="{{ route('branch.switch') }}">
+					@csrf
+					<select class="form-select" name="branch_id" onchange="this.form.submit()">
+						@foreach ($branches as $branch)
+							<option value="{{ $branch->id }}" {{ session('branch_id') == $branch->id ? 'selected' : '' }}>{{ $branch->name }}</option>
+						@endforeach
+					</select>
+				</form>
+				@endif
+
+                <li class="bg-light mt-3">
 					<a href="javascript:void(0);" id="clearCache">
 						<div class="parent-icon text-primary"><i class='bx bx-refresh '></i>
 						</div>
 						<div class="menu-title">{{ __('app.clear_cache') }}</div>
 					</a>
 				</li>
+
+
+				
+
 
 				@if(config('demo.enabled'))
 				<li class="bg-light">
