@@ -52,11 +52,21 @@
                                         <x-label for="mobile" name="{{ __('app.mobile') }}" />
                                         <x-input type="number" name="mobile" :required="false" value=""/>
                                     </div>
+
+
                                     <div class="col-md-6">
                                         <x-label for="role" name="{{ __('app.role') }}" />
                                         <x-drop-down-roles selected="" />
                                         <div class="valid-feedback"></div>
                                     </div>
+
+                                    <div class="col-md-6">
+                                        <x-label for="role" name="{{ __('app.branch') }}" />
+                                        <x-drop-down-branches selected="" />
+                                        <div class="valid-feedback"></div>
+                                    </div>
+
+
                                     <div class="col-md-6">
                                         <x-label for="password" name="{{ __('user.password') }}" />
                                         <x-input type="password" name="password" :required="true" value=""/>

@@ -886,20 +886,6 @@
 					</a>
 				</li>
 
-
-				
-
-
-				@if(config('demo.enabled'))
-				<li class="bg-light">
-					<a href="https://delta.creatantech.com/documentation" target="_blank">
-						<div class="parent-icon text-primary"><i class='bx bx-folder '></i>
-						</div>
-						<div class="menu-title">{{ __('app.documentation') }}</div>
-					</a>
-				</li>
-				@endif
-
                 <li>
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <div class="parent-icon text-danger"><i class='bx bx-log-out-circle'></i></div>
