@@ -18,6 +18,7 @@ use App\Models\Prefix;
 use App\Models\PaymentTypes;
 use App\Models\Expenses\ExpenseCategory;
 use App\Enums\App;
+use App\Models\Branch;
 use App\Services\PaymentTransactionService;
 use App\Traits\FormatNumber;
 use App\Services\AccountTransactionService;
@@ -209,6 +210,7 @@ class ExpenseController extends Controller
                     'note'                  => $validatedData['note'],
                     'round_off'             => $validatedData['round_off'],
                     'grand_total'           => $validatedData['grand_total'],
+                    'branch_id' => auth()->user()->branch_id,
                 ];
                 // First, find the expense
                 $newExpense = Expense::findOrFail($validatedData['expense_id']);
@@ -387,6 +389,7 @@ class ExpenseController extends Controller
                 'unit_price'                => $request->unit_price[$i],
                 'quantity'                  => $itemQuantity,
                 'total'                     => $request->total[$i],
+                'branch_id'                 => auth()->user()->branch_id,
             ];
 
             if(!ExpenseItem::create($itemsArray)){
@@ -420,13 +423,24 @@ class ExpenseController extends Controller
 
     public function datatableList(Request $request){
 
-        $data = Expense::with('user', 'paymentTransaction.paymentType','category', 'subcategory')
-                        ->when($request->expense_category_id, function ($query) use ($request) {
-                            return $query->where('expense_category_id', $request->expense_category_id);
-                        })
-                        ->when(!auth()->user()->can('expense.can.view.other.users.expenses'), function ($query) use ($request) {
-                            return $query->where('created_by', auth()->user()->id);
-                        });
+
+
+    $branchId = auth()->user()->branch_id;
+
+$isMainBranch = Branch::where('id', $branchId)
+    ->where('code', 'MAIN')
+    ->exists();
+
+$data = Expense::with('user', 'paymentTransaction.paymentType', 'category', 'subcategory')
+    ->when(!$isMainBranch, function ($query) use ($branchId) {
+        return $query->where('branch_id', $branchId);
+    })
+    ->when($request->expense_category_id, function ($query) use ($request) {
+        return $query->where('expense_category_id', $request->expense_category_id);
+    })
+    ->when(!auth()->user()->can('expense.can.view.other.users.expenses'), function ($query) {
+        return $query->where('created_by', auth()->id());
+    });
 
         return DataTables::of($data)
                     ->addIndexColumn()

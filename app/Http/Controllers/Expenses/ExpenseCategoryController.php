@@ -11,6 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Expenses\ExpenseCategory;
 use App\Http\Requests\ExpenseCategoryRequest;
 use App\Models\Accounts\Account;
+use App\Models\Branch;
 
 class ExpenseCategoryController extends Controller
 {
@@ -70,6 +71,7 @@ class ExpenseCategoryController extends Controller
                 'group_id'  => $validatedData['account_group_id'],
                 'description'  => $validatedData['description'],
                 'expense_category_id'  => $newExpense->id,
+                'branch_id' => auth()->user()->branch_id,
                 'is_deletable'  => 0,
             ]);
         }
@@ -111,8 +113,13 @@ class ExpenseCategoryController extends Controller
     }
 
     public function datatableList(Request $request){
-
-        $data = ExpenseCategory::with('user');
+        
+        $branchId = auth()->user()->branch_id;
+        $isMainBranch = Branch::where('id', $branchId)->where('code', 'MAIN')->exists();
+        $data = ExpenseCategory::with('user')->when(!$isMainBranch, function ($query) use ($branchId) {
+                $query->where('branch_id', $branchId);
+            })
+            ->get();
 
         return DataTables::of($data)
                     ->addIndexColumn()
@@ -150,8 +157,9 @@ class ExpenseCategoryController extends Controller
                     ->make(true);
     }
 
+    
     public function delete(Request $request) : JsonResponse{
-
+        
         $selectedRecordIds = $request->input('record_ids');
 
         // Perform validation for each selected record ID

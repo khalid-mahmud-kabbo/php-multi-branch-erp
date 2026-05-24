@@ -32,12 +32,12 @@ class BrandRequest extends FormRequest
         $rulesArray = [
             'description'                     => ['nullable','string', 'max:250'],
             'status'                          => ['required','numeric'],
-            'branch_id'                       => ['required','numeric'],
         ];
 
         if ($this->isMethod('PUT')) {
             $brandId             = $this->input('id');
             $rulesArray['id']           = ['required'];
+            $rulesArray['branch_id']    = auth()->user()->branch_id;
             $rulesArray['name']          = ['required', 'string', 'max:100', Rule::unique('brands')->where('name', $_POST['name'])->ignore($brandId)];
         }else{
             $rulesArray['name']          = ['required', 'string', 'max:100', Rule::unique('brands')->where('name', $_POST['name'])];

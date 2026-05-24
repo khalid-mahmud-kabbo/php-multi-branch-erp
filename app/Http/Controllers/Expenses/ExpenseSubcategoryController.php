@@ -86,6 +86,8 @@ class ExpenseSubcategoryController extends Controller
 
     public function datatableList(Request $request){
 
+        
+
         $data = ExpenseSubcategory::with('user');
 
         return DataTables::of($data)

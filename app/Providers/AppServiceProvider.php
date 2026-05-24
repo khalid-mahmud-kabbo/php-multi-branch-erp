@@ -153,9 +153,19 @@ class AppServiceProvider extends ServiceProvider
     if (auth()->check()) {
 
         $branches = Branch::where('status', 1)->get();
-
         $view->with('branches', $branches);
     }
+
+
+
+   
+
+
+
+
+
+
+
 });
     }
 }
