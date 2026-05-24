@@ -29,6 +29,7 @@ class ServiceRequest extends FormRequest
             'tax_id'                          => ['numeric',],
             'tax_type'                        => ['string', 'max:100'],
             'status'                          => ['required'],
+            'branch_id'                       => ['required','numeric'],
         ];
 
         if ($this->isMethod('PUT')) {

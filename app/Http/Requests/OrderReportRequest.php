@@ -34,6 +34,7 @@ class OrderReportRequest extends FormRequest
     {
         return [
             'customer_id'                           => ['nullable', 'integer', Rule::exists('customers', 'id')],
+            'branch_id'                       => ['required','numeric'],
             'from_date'                             => ['required', 'date'],
             'to_date'                               => ['required', 'date'],
         ];

@@ -41,6 +41,7 @@ class StockAdjustmentRequest extends FormRequest
             'reference_no'           => ['nullable', 'string','max:50'],
             'note'                 => ['nullable', 'string','max:250'],
             'row_count'            => ['required', 'integer', 'min:1'],
+            'branch_id'                       => ['required','numeric'],
         ];
 
         //For Update Operation

@@ -37,6 +37,7 @@ class OrderPaymentReportRequest extends FormRequest
             'from_date'                             => ['required', 'date'],
             'to_date'                               => ['required', 'date'],
             'payment_type_id'                       => ['nullable'],
+            'branch_id'                             => ['required','numeric'],
         ];
     }
 

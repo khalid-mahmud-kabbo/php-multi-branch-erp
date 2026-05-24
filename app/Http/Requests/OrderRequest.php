@@ -35,11 +35,12 @@ class OrderRequest extends FormRequest
     {
 
         $rulesArray = [
-            'party_id'                           => ['required', 'integer', Rule::exists('parties', 'id')],
+            'party_id'                              => ['required', 'integer', Rule::exists('parties', 'id')],
             'order_date'                            => ['required', 'date'],
             'order_status'                          => ['required', 'string','max:50'],
             'total_amount'                          => ['required', 'string','max:50'],
             'note'                                  => ['nullable', 'string','max:250'],
+            'branch_id'                             => ['required','numeric'],
         ];
         return $rulesArray;
 

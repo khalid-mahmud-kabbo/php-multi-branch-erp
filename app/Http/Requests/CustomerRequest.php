@@ -36,6 +36,7 @@ class CustomerRequest extends FormRequest
             'whatsapp'                              => ['nullable', 'string', 'max:100'],
             'address'                               => ['nullable', 'string', 'max:100'],
             'status'                                => ['required'],
+            'branch_id'                             => ['required','numeric'],
         ];
 
         if ($this->isMethod('PUT')) {

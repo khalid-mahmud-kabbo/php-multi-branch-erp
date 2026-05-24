@@ -34,7 +34,7 @@ class ItemRequest extends FormRequest
         $rulesArray = [
             'hsn'                             => ['nullable', 'string', 'max:100'],
             'item_category_id'                => ['required'],
-
+            'branch_id'                       => ['required','numeric'],
             'brand_id'                        => ['nullable'],
 
             'base_unit_id'                    => ['required'],

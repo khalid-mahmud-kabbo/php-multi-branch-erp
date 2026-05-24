@@ -43,12 +43,13 @@ class SaleRequest extends FormRequest
             'reference_no'          => ['nullable', 'string','max:50'],
             'round_off'            => ['nullable',Rule::requiredIf( fn () => empty($this->input('round_off'))),'numeric',],
             'grand_total'          => ['required', 'numeric'],
-'change_return'          => ['nullable', 'numeric'],
+            'change_return'          => ['nullable', 'numeric'],
             'note'                 => ['nullable', 'string','max:250'],
             'state_id'             => ['nullable', 'integer', Rule::exists('states', 'id')],
             'row_count'            => ['required', 'integer', 'min:1'],
             'currency_id'          => ['nullable', 'integer', 'min:1'],
             'exchange_rate'        => ['nullable', 'numeric', 'min:0'],
+            'branch_id'                       => ['required','numeric'],
         ];
 
         //For Update Operation

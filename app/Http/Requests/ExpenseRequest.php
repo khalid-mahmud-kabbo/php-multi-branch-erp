@@ -44,6 +44,7 @@ class ExpenseRequest extends FormRequest
             'grand_total'                           => ['required', 'numeric'],
             'note'                                  => ['nullable', 'string','max:250'],
             'row_count'                             => ['required', 'integer', 'min:1'],
+            'branch_id'                       => ['required','numeric'],
         ];
 
         if ($this->isMethod('PUT')) {

@@ -24,6 +24,7 @@ class ExpenseSubcategoryRequest extends FormRequest
         $rulesArray = [
             'name'                            => ['required', 'string'],
             'description'                     => ['nullable','string',],
+            'branch_id'                       => ['required','numeric'],
 
         ];
 

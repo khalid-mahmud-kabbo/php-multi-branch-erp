@@ -51,6 +51,7 @@ class PurchaseRequest extends FormRequest
             'exchange_rate'        => ['nullable', 'numeric', 'min:0'],
             'shipping_charge'      => ['nullable', 'numeric', 'min:0'],
             'is_shipping_charge_distributed' => ['nullable', 'boolean'],
+            'branch_id'                       => ['required','numeric'],
         ];
 
         //For Update Operation

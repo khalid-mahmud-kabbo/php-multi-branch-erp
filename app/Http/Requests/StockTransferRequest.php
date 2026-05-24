@@ -40,6 +40,7 @@ class StockTransferRequest extends FormRequest
             'count_id'              => ['required', 'numeric'],
             'note'                  => ['nullable', 'string','max:250'],
             'row_count'             => ['required', 'integer', 'min:1'],
+            'branch_id'                       => ['required','numeric'],
         ];
 
         //For Update Operation

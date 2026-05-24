@@ -32,6 +32,7 @@ class ItemCategoryRequest extends FormRequest
         $rulesArray = [
             'description'                     => ['nullable','string', 'max:250'],
             'status'                          => ['required','numeric'],
+            'branch_id'                       => ['required','numeric'],
         ];
 
         if ($this->isMethod('PUT')) {

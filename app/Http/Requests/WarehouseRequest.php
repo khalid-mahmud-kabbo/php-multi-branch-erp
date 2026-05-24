@@ -27,6 +27,7 @@ class WarehouseRequest extends FormRequest
         $rulesArray = [
             'status'               => ['required'],
             'description'          => ['nullable','string', 'max:250'],
+            'branch_id'                       => ['required','numeric'],
         ];
 
         if ($this->isMethod('PUT')) {

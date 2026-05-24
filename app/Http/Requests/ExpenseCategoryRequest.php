@@ -25,6 +25,7 @@ class ExpenseCategoryRequest extends FormRequest
             'name'                            => ['required', 'string'],
             'description'                     => ['nullable','string',],
             'account_group_id'                => ['numeric',],
+            'branch_id'                       => ['required','numeric'],
         ];
 
         if ($this->isMethod('PUT')) {

@@ -48,6 +48,7 @@ class PurchaseReturnRequest extends FormRequest
             'row_count'            => ['required', 'integer', 'min:1'],
             'currency_id'          => ['nullable', 'integer', 'min:1'],
             'exchange_rate'        => ['nullable', 'numeric', 'min:0'],
+            'branch_id'                       => ['required','numeric'],
         ];
 
         //For Update Operation

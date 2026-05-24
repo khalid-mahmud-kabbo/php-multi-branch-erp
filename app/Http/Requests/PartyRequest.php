@@ -46,6 +46,7 @@ class PartyRequest extends FormRequest
             'is_set_credit_limit'                   => ['required', 'numeric'],
             'currency_id'                           => ['required', 'numeric'],
             'credit_limit'                          => ['nullable', 'numeric'],
+            'branch_id'                       => ['required','numeric'],
         ];
 
 
