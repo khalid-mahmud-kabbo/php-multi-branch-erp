@@ -21,6 +21,7 @@
                                     @csrf
                                     @method('POST')
                                     <input type="hidden" id="base_url" value="{{ url('/') }}">
+                                    <div class="row">
                                     <div class="col-md-6">
                                         <x-label for="user_picture" name="{{ __('user.user_picture') }}" />
                                         <x-browse-image 
@@ -31,7 +32,7 @@
                                                         imageResetClass='image-reset-class-1' 
                                                         />
                                     </div>
-                                    <br>
+                                    </div>
                                     <div class="col-md-6">
                                         <x-label for="first_name" name="{{ __('user.first_name') }}" />
                                         <x-input type="text" name="first_name" :required="true" value=""/>

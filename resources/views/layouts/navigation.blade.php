@@ -872,7 +872,7 @@
 					@csrf
 					<select class="form-select" name="branch_id" onchange="this.form.submit()">
 						@foreach ($branches as $branch)
-							<option value="{{ $branch->id }}" {{ session('branch_id') == $branch->id ? 'selected' : '' }}>{{ $branch->name }}</option>
+							<option value="{{ $branch->id }}" {{ auth()->user()->branch_id ?? session('branch_id') == $branch->id ? 'selected' : '' }}>{{ $branch->name }}</option>
 						@endforeach
 					</select>
 				</form>

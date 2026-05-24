@@ -6,6 +6,17 @@
             </div>
               <div class="top-menu ms-auto">
                 <ul class="navbar-nav align-items-center gap-1">
+                    
+                    <div class="d-flex">
+                        <a href="#" class="btn btn-sm btn-danger radius-30 px-4">
+
+                            @php
+                                $branch = \App\Models\Branch::where('id', auth()->user()->branch_id)->first();
+                            @endphp
+                           <i class="bx bx-git-branch mr-1"></i>{{ __($branch->name) }}
+                        </a>
+                    </div>
+
                     @can('purchase.bill.create')
                     <div class="d-flex">
                         <a href="{{ route('purchase.bill.create') }}" class="btn btn-sm btn-outline-primary radius-30 px-4" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __('purchase.add') }}">

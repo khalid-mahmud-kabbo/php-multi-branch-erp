@@ -59,6 +59,12 @@
                                         <x-drop-down-roles selected="{{ $user->role_id }}" />
                                         <div class="valid-feedback"></div>
                                     </div>
+
+                                    <div class="col-md-6">
+                                        <x-label for="role" name="{{ __('app.branch') }}" />
+                                        <x-drop-down-branches selected="{{ $user->branch_id }}" />
+                                        <div class="valid-feedback"></div>
+                                    </div>
                                     
                                     <div class="col-md-6">
                                         <x-label for="password" name="{{ __('user.password') }}" :optionalText="true" />
